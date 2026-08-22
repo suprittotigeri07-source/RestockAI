@@ -1,0 +1,69 @@
+-- ==========================================================
+-- RestockAI Portable Database Schema (PostgreSQL & BigQuery)
+-- ==========================================================
+
+-- Stores table
+CREATE TABLE IF NOT EXISTS stores (
+    store_id VARCHAR(64) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    region VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Items table
+CREATE TABLE IF NOT EXISTS items (
+    item_id VARCHAR(64) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(64) NOT NULL,
+    unit_cost NUMERIC(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Daily sales & inventory table
+CREATE TABLE IF NOT EXISTS sales_daily (
+    store_id VARCHAR(64) NOT NULL,
+    item_id VARCHAR(64) NOT NULL,
+    date DATE NOT NULL,
+    units_sold INT NOT NULL,
+    stock_on_hand INT NOT NULL,
+    price NUMERIC(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (store_id, item_id, date),
+    FOREIGN KEY (store_id) REFERENCES stores(store_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(item_id) ON DELETE CASCADE
+);
+
+-- Indexes for high performance querying
+CREATE INDEX IF NOT EXISTS idx_sales_daily_date ON sales_daily(date);
+CREATE INDEX IF NOT EXISTS idx_sales_daily_store_item ON sales_daily(store_id, item_id);
+
+-- Forecasts table (Used in Phase 2)
+CREATE TABLE IF NOT EXISTS forecasts (
+    forecast_id VARCHAR(64) PRIMARY KEY,
+    store_id VARCHAR(64) NOT NULL,
+    item_id VARCHAR(64) NOT NULL,
+    forecast_date DATE NOT NULL,
+    horizon_days INT NOT NULL,
+    predicted_demand NUMERIC(10, 2) NOT NULL,
+    lower_bound NUMERIC(10, 2) NOT NULL,
+    upper_bound NUMERIC(10, 2) NOT NULL,
+    model_used VARCHAR(64) NOT NULL,
+    model_mape NUMERIC(8, 4),
+    model_rmse NUMERIC(10, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (store_id) REFERENCES stores(store_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(item_id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_forecasts_lookup ON forecasts(store_id, item_id, forecast_date);
+
+-- System Logs table (Used in Phase 5)
+CREATE TABLE IF NOT EXISTS system_logs (
+    log_id VARCHAR(64) PRIMARY KEY,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    event_type VARCHAR(64) NOT NULL,
+    component VARCHAR(64) NOT NULL,
+    status VARCHAR(32) NOT NULL,
+    details TEXT,
+    execution_time_ms INT
+);

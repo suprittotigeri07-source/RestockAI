@@ -1,0 +1,201 @@
+item_id,name,category,unit_cost,created_at
+ITM_0001,Organic Green Tea,Beverages,4.59,2026-08-22 13:37:39
+ITM_0002,Whole Milk 1Gal,Dairy,1.89,2026-08-22 13:37:39
+ITM_0003,Artisan Sourdough,Bakery,2.41,2026-08-22 13:37:39
+ITM_0004,Organic Bananas 2lb,Produce,1.64,2026-08-22 13:37:39
+ITM_0005,Boneless Chicken Breast 2lb,Meat & Seafood,11.23,2026-08-22 13:37:39
+ITM_0006,Tortilla Chips Sea Salt,Snacks,4.17,2026-08-22 13:37:39
+ITM_0007,Frozen Thin Crust Pizza,Frozen,7.2,2026-08-22 13:37:39
+ITM_0008,Paper Towels 6 Rolls,Household,3.33,2026-08-22 13:37:39
+ITM_0009,Cold Brew Coffee (Var 2),Beverages,3.44,2026-08-22 13:37:39
+ITM_0010,Greek Yogurt 32oz (Var 2),Dairy,1.9,2026-08-22 13:37:39
+ITM_0011,Whole Wheat Bread (Var 2),Bakery,2.22,2026-08-22 13:37:39
+ITM_0012,Avocados Hass 4pk (Var 2),Produce,2.57,2026-08-22 13:37:39
+ITM_0013,Ground Beef 85/15 1lb (Var 2),Meat & Seafood,3.78,2026-08-22 13:37:39
+ITM_0014,Mixed Nuts Roasted 16oz (Var 2),Snacks,2.22,2026-08-22 13:37:39
+ITM_0015,Ice Cream Vanilla Bean 48oz (Var 2),Frozen,5.84,2026-08-22 13:37:39
+ITM_0016,Toilet Paper 12 Mega Rolls (Var 2),Household,7.68,2026-08-22 13:37:39
+ITM_0017,Sparkling Water 12pk (Var 3),Beverages,2.37,2026-08-22 13:37:39
+ITM_0018,Cheddar Cheese Block (Var 3),Dairy,3.8,2026-08-22 13:37:39
+ITM_0019,Brioche Buns 6pk (Var 3),Bakery,4.17,2026-08-22 13:37:39
+ITM_0020,Honeycrisp Apples 3lb (Var 3),Produce,0.92,2026-08-22 13:37:39
+ITM_0021,Atlantic Salmon Fillet 1lb (Var 3),Meat & Seafood,11.96,2026-08-22 13:37:39
+ITM_0022,Dark Chocolate Bar 70% (Var 3),Snacks,4.26,2026-08-22 13:37:39
+ITM_0023,Frozen Berries Blend 24oz (Var 3),Frozen,4.11,2026-08-22 13:37:39
+ITM_0024,Liquid Laundry Detergent 64 loads (Var 3),Household,3.98,2026-08-22 13:37:39
+ITM_0025,Almond Milk 64oz (Var 4),Beverages,6.27,2026-08-22 13:37:39
+ITM_0026,Unsalted Butter 1lb (Var 4),Dairy,2.94,2026-08-22 13:37:39
+ITM_0027,Blueberry Muffins 4pk (Var 4),Bakery,1.81,2026-08-22 13:37:39
+ITM_0028,Baby Spinach 16oz (Var 4),Produce,1.22,2026-08-22 13:37:39
+ITM_0029,Pork Chops Bone-In 2lb (Var 4),Meat & Seafood,12.4,2026-08-22 13:37:39
+ITM_0030,Pretzels Crispy 16oz (Var 4),Snacks,3.88,2026-08-22 13:37:39
+ITM_0031,Waffles Homestyle 10ct (Var 4),Frozen,6.72,2026-08-22 13:37:39
+ITM_0032,Dish Soap 24oz (Var 4),Household,9.43,2026-08-22 13:37:39
+ITM_0033,Fresh Orange Juice (Var 5),Beverages,4.04,2026-08-22 13:37:39
+ITM_0034,Sour Cream 16oz (Var 5),Dairy,5.11,2026-08-22 13:37:39
+ITM_0035,Butter Croissants 4pk (Var 5),Bakery,2.75,2026-08-22 13:37:39
+ITM_0036,Roma Tomatoes 2lb (Var 5),Produce,2.72,2026-08-22 13:37:39
+ITM_0037,Thick Cut Bacon 16oz (Var 5),Meat & Seafood,12.21,2026-08-22 13:37:39
+ITM_0038,Granola Bars Honey Oats (Var 5),Snacks,3.94,2026-08-22 13:37:39
+ITM_0039,Frozen Vegetables Stir Fry (Var 5),Frozen,7.03,2026-08-22 13:37:39
+ITM_0040,Disinfecting Wipes 75ct (Var 5),Household,7.98,2026-08-22 13:37:39
+ITM_0041,Energy Drink 4pk (Var 6),Beverages,4.93,2026-08-22 13:37:39
+ITM_0042,Cottage Cheese (Var 6),Dairy,1.96,2026-08-22 13:37:39
+ITM_0043,Bagels Plain 6pk (Var 6),Bakery,2.25,2026-08-22 13:37:39
+ITM_0044,English Cucumbers (Var 6),Produce,1.85,2026-08-22 13:37:39
+ITM_0045,Ground Turkey 93/7 1lb (Var 6),Meat & Seafood,4.34,2026-08-22 13:37:39
+ITM_0046,Gourmet Popcorn Cheddar (Var 6),Snacks,2.35,2026-08-22 13:37:39
+ITM_0047,Burritos Bean & Cheese 4pk (Var 6),Frozen,2.77,2026-08-22 13:37:39
+ITM_0048,Trash Bags 13Gal 45ct (Var 6),Household,5.14,2026-08-22 13:37:39
+ITM_0049,Kombucha Ginger (Var 7),Beverages,4.57,2026-08-22 13:37:39
+ITM_0050,Eggs Large Grade A 12ct (Var 7),Dairy,3.04,2026-08-22 13:37:39
+ITM_0051,Chocolate Chip Cookies (Var 7),Bakery,2.72,2026-08-22 13:37:39
+ITM_0052,Yellow Onions 3lb (Var 7),Produce,1.59,2026-08-22 13:37:39
+ITM_0053,Jumbo Shrimp 1lb (Var 7),Meat & Seafood,6.3,2026-08-22 13:37:39
+ITM_0054,Pita Chips Garlic (Var 7),Snacks,5.24,2026-08-22 13:37:39
+ITM_0055,Chicken Nuggets 24oz (Var 7),Frozen,5.83,2026-08-22 13:37:39
+ITM_0056,Sponges Multi-Pack 6ct (Var 7),Household,8.29,2026-08-22 13:37:39
+ITM_0057,Oat Milk Barista (Var 8),Beverages,2.11,2026-08-22 13:37:39
+ITM_0058,Mozzarella Shredded (Var 8),Dairy,4.28,2026-08-22 13:37:39
+ITM_0059,Cinnamon Rolls (Var 8),Bakery,2.04,2026-08-22 13:37:39
+ITM_0060,Russet Potatoes 5lb (Var 8),Produce,2.15,2026-08-22 13:37:39
+ITM_0061,Italian Sausage 1lb (Var 8),Meat & Seafood,13.89,2026-08-22 13:37:39
+ITM_0062,Trail Mix Mountain Blend (Var 8),Snacks,4.02,2026-08-22 13:37:39
+ITM_0063,Frozen Dumplings Pork (Var 8),Frozen,5.32,2026-08-22 13:37:39
+ITM_0064,Foil Wrap Heavy Duty 75ft (Var 8),Household,9.0,2026-08-22 13:37:39
+ITM_0065,Organic Green Tea (Var 9),Beverages,5.67,2026-08-22 13:37:39
+ITM_0066,Whole Milk 1Gal (Var 9),Dairy,4.44,2026-08-22 13:37:39
+ITM_0067,Artisan Sourdough (Var 9),Bakery,2.26,2026-08-22 13:37:39
+ITM_0068,Organic Bananas 2lb (Var 9),Produce,1.01,2026-08-22 13:37:39
+ITM_0069,Boneless Chicken Breast 2lb (Var 9),Meat & Seafood,6.81,2026-08-22 13:37:39
+ITM_0070,Tortilla Chips Sea Salt (Var 9),Snacks,2.5,2026-08-22 13:37:39
+ITM_0071,Frozen Thin Crust Pizza (Var 9),Frozen,3.38,2026-08-22 13:37:39
+ITM_0072,Paper Towels 6 Rolls (Var 9),Household,11.46,2026-08-22 13:37:39
+ITM_0073,Cold Brew Coffee (Var 10),Beverages,5.84,2026-08-22 13:37:39
+ITM_0074,Greek Yogurt 32oz (Var 10),Dairy,2.87,2026-08-22 13:37:39
+ITM_0075,Whole Wheat Bread (Var 10),Bakery,3.66,2026-08-22 13:37:39
+ITM_0076,Avocados Hass 4pk (Var 10),Produce,2.21,2026-08-22 13:37:39
+ITM_0077,Ground Beef 85/15 1lb (Var 10),Meat & Seafood,13.1,2026-08-22 13:37:39
+ITM_0078,Mixed Nuts Roasted 16oz (Var 10),Snacks,3.28,2026-08-22 13:37:39
+ITM_0079,Ice Cream Vanilla Bean 48oz (Var 10),Frozen,3.68,2026-08-22 13:37:39
+ITM_0080,Toilet Paper 12 Mega Rolls (Var 10),Household,4.84,2026-08-22 13:37:39
+ITM_0081,Sparkling Water 12pk (Var 11),Beverages,4.18,2026-08-22 13:37:39
+ITM_0082,Cheddar Cheese Block (Var 11),Dairy,2.69,2026-08-22 13:37:39
+ITM_0083,Brioche Buns 6pk (Var 11),Bakery,3.43,2026-08-22 13:37:39
+ITM_0084,Honeycrisp Apples 3lb (Var 11),Produce,3.86,2026-08-22 13:37:39
+ITM_0085,Atlantic Salmon Fillet 1lb (Var 11),Meat & Seafood,7.69,2026-08-22 13:37:39
+ITM_0086,Dark Chocolate Bar 70% (Var 11),Snacks,2.3,2026-08-22 13:37:39
+ITM_0087,Frozen Berries Blend 24oz (Var 11),Frozen,7.79,2026-08-22 13:37:39
+ITM_0088,Liquid Laundry Detergent 64 loads (Var 11),Household,7.34,2026-08-22 13:37:39
+ITM_0089,Almond Milk 64oz (Var 12),Beverages,1.68,2026-08-22 13:37:39
+ITM_0090,Unsalted Butter 1lb (Var 12),Dairy,1.96,2026-08-22 13:37:39
+ITM_0091,Blueberry Muffins 4pk (Var 12),Bakery,1.86,2026-08-22 13:37:39
+ITM_0092,Baby Spinach 16oz (Var 12),Produce,2.97,2026-08-22 13:37:39
+ITM_0093,Pork Chops Bone-In 2lb (Var 12),Meat & Seafood,11.82,2026-08-22 13:37:39
+ITM_0094,Pretzels Crispy 16oz (Var 12),Snacks,3.13,2026-08-22 13:37:39
+ITM_0095,Waffles Homestyle 10ct (Var 12),Frozen,2.56,2026-08-22 13:37:39
+ITM_0096,Dish Soap 24oz (Var 12),Household,6.13,2026-08-22 13:37:39
+ITM_0097,Fresh Orange Juice (Var 13),Beverages,6.48,2026-08-22 13:37:39
+ITM_0098,Sour Cream 16oz (Var 13),Dairy,3.6,2026-08-22 13:37:39
+ITM_0099,Butter Croissants 4pk (Var 13),Bakery,4.7,2026-08-22 13:37:39
+ITM_0100,Roma Tomatoes 2lb (Var 13),Produce,3.74,2026-08-22 13:37:39
+ITM_0101,Thick Cut Bacon 16oz (Var 13),Meat & Seafood,3.62,2026-08-22 13:37:39
+ITM_0102,Granola Bars Honey Oats (Var 13),Snacks,4.35,2026-08-22 13:37:39
+ITM_0103,Frozen Vegetables Stir Fry (Var 13),Frozen,6.02,2026-08-22 13:37:39
+ITM_0104,Disinfecting Wipes 75ct (Var 13),Household,7.6,2026-08-22 13:37:39
+ITM_0105,Energy Drink 4pk (Var 14),Beverages,2.61,2026-08-22 13:37:39
+ITM_0106,Cottage Cheese (Var 14),Dairy,3.98,2026-08-22 13:37:39
+ITM_0107,Bagels Plain 6pk (Var 14),Bakery,1.87,2026-08-22 13:37:39
+ITM_0108,English Cucumbers (Var 14),Produce,2.33,2026-08-22 13:37:39
+ITM_0109,Ground Turkey 93/7 1lb (Var 14),Meat & Seafood,8.26,2026-08-22 13:37:39
+ITM_0110,Gourmet Popcorn Cheddar (Var 14),Snacks,5.31,2026-08-22 13:37:39
+ITM_0111,Burritos Bean & Cheese 4pk (Var 14),Frozen,7.1,2026-08-22 13:37:39
+ITM_0112,Trash Bags 13Gal 45ct (Var 14),Household,5.0,2026-08-22 13:37:39
+ITM_0113,Kombucha Ginger (Var 15),Beverages,3.85,2026-08-22 13:37:39
+ITM_0114,Eggs Large Grade A 12ct (Var 15),Dairy,2.41,2026-08-22 13:37:39
+ITM_0115,Chocolate Chip Cookies (Var 15),Bakery,4.51,2026-08-22 13:37:39
+ITM_0116,Yellow Onions 3lb (Var 15),Produce,3.77,2026-08-22 13:37:39
+ITM_0117,Jumbo Shrimp 1lb (Var 15),Meat & Seafood,6.63,2026-08-22 13:37:39
+ITM_0118,Pita Chips Garlic (Var 15),Snacks,4.02,2026-08-22 13:37:39
+ITM_0119,Chicken Nuggets 24oz (Var 15),Frozen,5.61,2026-08-22 13:37:39
+ITM_0120,Sponges Multi-Pack 6ct (Var 15),Household,3.95,2026-08-22 13:37:39
+ITM_0121,Oat Milk Barista (Var 16),Beverages,5.24,2026-08-22 13:37:39
+ITM_0122,Mozzarella Shredded (Var 16),Dairy,3.63,2026-08-22 13:37:39
+ITM_0123,Cinnamon Rolls (Var 16),Bakery,4.07,2026-08-22 13:37:39
+ITM_0124,Russet Potatoes 5lb (Var 16),Produce,2.65,2026-08-22 13:37:39
+ITM_0125,Italian Sausage 1lb (Var 16),Meat & Seafood,3.51,2026-08-22 13:37:39
+ITM_0126,Trail Mix Mountain Blend (Var 16),Snacks,2.73,2026-08-22 13:37:39
+ITM_0127,Frozen Dumplings Pork (Var 16),Frozen,2.31,2026-08-22 13:37:39
+ITM_0128,Foil Wrap Heavy Duty 75ft (Var 16),Household,11.33,2026-08-22 13:37:39
+ITM_0129,Organic Green Tea (Var 17),Beverages,5.86,2026-08-22 13:37:39
+ITM_0130,Whole Milk 1Gal (Var 17),Dairy,4.63,2026-08-22 13:37:39
+ITM_0131,Artisan Sourdough (Var 17),Bakery,2.51,2026-08-22 13:37:39
+ITM_0132,Organic Bananas 2lb (Var 17),Produce,1.09,2026-08-22 13:37:39
+ITM_0133,Boneless Chicken Breast 2lb (Var 17),Meat & Seafood,12.72,2026-08-22 13:37:39
+ITM_0134,Tortilla Chips Sea Salt (Var 17),Snacks,5.28,2026-08-22 13:37:39
+ITM_0135,Frozen Thin Crust Pizza (Var 17),Frozen,2.68,2026-08-22 13:37:39
+ITM_0136,Paper Towels 6 Rolls (Var 17),Household,7.12,2026-08-22 13:37:39
+ITM_0137,Cold Brew Coffee (Var 18),Beverages,1.57,2026-08-22 13:37:39
+ITM_0138,Greek Yogurt 32oz (Var 18),Dairy,4.39,2026-08-22 13:37:39
+ITM_0139,Whole Wheat Bread (Var 18),Bakery,4.03,2026-08-22 13:37:39
+ITM_0140,Avocados Hass 4pk (Var 18),Produce,1.32,2026-08-22 13:37:39
+ITM_0141,Ground Beef 85/15 1lb (Var 18),Meat & Seafood,8.49,2026-08-22 13:37:39
+ITM_0142,Mixed Nuts Roasted 16oz (Var 18),Snacks,3.65,2026-08-22 13:37:39
+ITM_0143,Ice Cream Vanilla Bean 48oz (Var 18),Frozen,3.68,2026-08-22 13:37:39
+ITM_0144,Toilet Paper 12 Mega Rolls (Var 18),Household,10.79,2026-08-22 13:37:39
+ITM_0145,Sparkling Water 12pk (Var 19),Beverages,3.44,2026-08-22 13:37:39
+ITM_0146,Cheddar Cheese Block (Var 19),Dairy,2.52,2026-08-22 13:37:39
+ITM_0147,Brioche Buns 6pk (Var 19),Bakery,3.28,2026-08-22 13:37:39
+ITM_0148,Honeycrisp Apples 3lb (Var 19),Produce,3.31,2026-08-22 13:37:39
+ITM_0149,Atlantic Salmon Fillet 1lb (Var 19),Meat & Seafood,5.61,2026-08-22 13:37:39
+ITM_0150,Dark Chocolate Bar 70% (Var 19),Snacks,2.68,2026-08-22 13:37:39
+ITM_0151,Frozen Berries Blend 24oz (Var 19),Frozen,7.77,2026-08-22 13:37:39
+ITM_0152,Liquid Laundry Detergent 64 loads (Var 19),Household,8.67,2026-08-22 13:37:39
+ITM_0153,Almond Milk 64oz (Var 20),Beverages,3.52,2026-08-22 13:37:39
+ITM_0154,Unsalted Butter 1lb (Var 20),Dairy,3.56,2026-08-22 13:37:39
+ITM_0155,Blueberry Muffins 4pk (Var 20),Bakery,1.9,2026-08-22 13:37:39
+ITM_0156,Baby Spinach 16oz (Var 20),Produce,1.64,2026-08-22 13:37:39
+ITM_0157,Pork Chops Bone-In 2lb (Var 20),Meat & Seafood,7.05,2026-08-22 13:37:39
+ITM_0158,Pretzels Crispy 16oz (Var 20),Snacks,3.81,2026-08-22 13:37:39
+ITM_0159,Waffles Homestyle 10ct (Var 20),Frozen,3.49,2026-08-22 13:37:39
+ITM_0160,Dish Soap 24oz (Var 20),Household,4.59,2026-08-22 13:37:39
+ITM_0161,Fresh Orange Juice (Var 21),Beverages,1.58,2026-08-22 13:37:39
+ITM_0162,Sour Cream 16oz (Var 21),Dairy,3.95,2026-08-22 13:37:39
+ITM_0163,Butter Croissants 4pk (Var 21),Bakery,2.26,2026-08-22 13:37:39
+ITM_0164,Roma Tomatoes 2lb (Var 21),Produce,3.89,2026-08-22 13:37:39
+ITM_0165,Thick Cut Bacon 16oz (Var 21),Meat & Seafood,12.53,2026-08-22 13:37:39
+ITM_0166,Granola Bars Honey Oats (Var 21),Snacks,1.69,2026-08-22 13:37:39
+ITM_0167,Frozen Vegetables Stir Fry (Var 21),Frozen,3.53,2026-08-22 13:37:39
+ITM_0168,Disinfecting Wipes 75ct (Var 21),Household,8.86,2026-08-22 13:37:39
+ITM_0169,Energy Drink 4pk (Var 22),Beverages,2.34,2026-08-22 13:37:39
+ITM_0170,Cottage Cheese (Var 22),Dairy,2.25,2026-08-22 13:37:39
+ITM_0171,Bagels Plain 6pk (Var 22),Bakery,4.59,2026-08-22 13:37:39
+ITM_0172,English Cucumbers (Var 22),Produce,2.78,2026-08-22 13:37:39
+ITM_0173,Ground Turkey 93/7 1lb (Var 22),Meat & Seafood,8.46,2026-08-22 13:37:39
+ITM_0174,Gourmet Popcorn Cheddar (Var 22),Snacks,4.62,2026-08-22 13:37:39
+ITM_0175,Burritos Bean & Cheese 4pk (Var 22),Frozen,6.72,2026-08-22 13:37:39
+ITM_0176,Trash Bags 13Gal 45ct (Var 22),Household,4.31,2026-08-22 13:37:39
+ITM_0177,Kombucha Ginger (Var 23),Beverages,1.71,2026-08-22 13:37:39
+ITM_0178,Eggs Large Grade A 12ct (Var 23),Dairy,3.27,2026-08-22 13:37:39
+ITM_0179,Chocolate Chip Cookies (Var 23),Bakery,2.9,2026-08-22 13:37:39
+ITM_0180,Yellow Onions 3lb (Var 23),Produce,2.44,2026-08-22 13:37:39
+ITM_0181,Jumbo Shrimp 1lb (Var 23),Meat & Seafood,11.16,2026-08-22 13:37:39
+ITM_0182,Pita Chips Garlic (Var 23),Snacks,4.16,2026-08-22 13:37:39
+ITM_0183,Chicken Nuggets 24oz (Var 23),Frozen,7.71,2026-08-22 13:37:39
+ITM_0184,Sponges Multi-Pack 6ct (Var 23),Household,3.43,2026-08-22 13:37:39
+ITM_0185,Oat Milk Barista (Var 24),Beverages,3.33,2026-08-22 13:37:39
+ITM_0186,Mozzarella Shredded (Var 24),Dairy,2.95,2026-08-22 13:37:39
+ITM_0187,Cinnamon Rolls (Var 24),Bakery,4.34,2026-08-22 13:37:39
+ITM_0188,Russet Potatoes 5lb (Var 24),Produce,1.72,2026-08-22 13:37:39
+ITM_0189,Italian Sausage 1lb (Var 24),Meat & Seafood,5.5,2026-08-22 13:37:39
+ITM_0190,Trail Mix Mountain Blend (Var 24),Snacks,3.24,2026-08-22 13:37:39
+ITM_0191,Frozen Dumplings Pork (Var 24),Frozen,4.56,2026-08-22 13:37:39
+ITM_0192,Foil Wrap Heavy Duty 75ft (Var 24),Household,5.15,2026-08-22 13:37:39
+ITM_0193,Organic Green Tea (Var 25),Beverages,2.52,2026-08-22 13:37:39
+ITM_0194,Whole Milk 1Gal (Var 25),Dairy,4.94,2026-08-22 13:37:39
+ITM_0195,Artisan Sourdough (Var 25),Bakery,2.96,2026-08-22 13:37:39
+ITM_0196,Organic Bananas 2lb (Var 25),Produce,3.74,2026-08-22 13:37:39
+ITM_0197,Boneless Chicken Breast 2lb (Var 25),Meat & Seafood,9.28,2026-08-22 13:37:39
+ITM_0198,Tortilla Chips Sea Salt (Var 25),Snacks,1.61,2026-08-22 13:37:39
+ITM_0199,Frozen Thin Crust Pizza (Var 25),Frozen,7.8,2026-08-22 13:37:39
+ITM_0200,Paper Towels 6 Rolls (Var 25),Household,10.44,2026-08-22 13:37:39

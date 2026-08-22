@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: restockai-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: restockai
+      POSTGRES_USER: restock_user
+      POSTGRES_PASSWORD: restock_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./data/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U restock_user -d restockai"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    container_name: restockai-api
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://restock_user:restock_password@postgres:5432/restockai
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ENVIRONMENT: production
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+
+  ml-scheduler:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ml
+    container_name: restockai-ml-scheduler
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://restock_user:restock_password@postgres:5432/restockai
+    volumes:
+      - ./data:/app/data
+
+volumes:
+  postgres_data:
