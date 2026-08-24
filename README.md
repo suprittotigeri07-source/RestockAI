@@ -234,31 +234,6 @@ The Profile section allows users to manage their account information and view th
   <img width="1920" height="1080" alt="RestockAI Profile" src="https://github.com/user-attachments/assets/f0992b0b-e719-4ba8-b5c1-8a2af8789761" />
 </p>
 
----
-
-## 📸 Application Preview
-
-### Dashboard
-
-<img width="1920" height="1080" alt="Dashboard" src="https://github.com/user-attachments/assets/790f3dff-4a1e-4fc6-bcf3-3d012db20a24" />
-
-### Prediction Studio
-
-<img width="1920" height="1080" alt="Prediction Studio" src="https://github.com/user-attachments/assets/2b012936-0088-4b68-aada-16361ae2b0d0" />
-
-### Prediction History
-
-<img width="1920" height="1080" alt="Prediction History" src="https://github.com/user-attachments/assets/bfeffb4f-b49a-49f0-bc31-4458b5bc7c92" />
-
-### Store Replenishment
-
-<img width="1920" height="1080" alt="Store Replenishment" src="https://github.com/user-attachments/assets/26fec34e-ab29-4798-8205-a372f5d56ae3" />
-
-### Profile
-
-<img width="1920" height="1080" alt="Profile" src="https://github.com/user-attachments/assets/f0992b0b-e719-4ba8-b5c1-8a2af8789761" />
-
----
 
 ## 🚀 Project Highlights
 
