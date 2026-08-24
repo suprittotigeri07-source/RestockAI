@@ -67,3 +67,48 @@ CREATE TABLE IF NOT EXISTS system_logs (
     details TEXT,
     execution_time_ms INT
 );
+
+-- ==========================================================
+-- Multi-User Platform Tables (Auth, User Data, Predictions)
+-- ==========================================================
+
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
+    id VARCHAR(64) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+
+-- User Data table
+CREATE TABLE IF NOT EXISTS user_data (
+    id VARCHAR(64) PRIMARY KEY,
+    user_id VARCHAR(64) NOT NULL,
+    title VARCHAR(255),
+    input_data TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_data_user_id ON user_data(user_id);
+
+-- Predictions table
+CREATE TABLE IF NOT EXISTS predictions (
+    id VARCHAR(64) PRIMARY KEY,
+    user_id VARCHAR(64) NOT NULL,
+    input_data TEXT NOT NULL,
+    prediction NUMERIC(10, 2) NOT NULL,
+    confidence NUMERIC(5, 2) NOT NULL,
+    lower_bound NUMERIC(10, 2),
+    upper_bound NUMERIC(10, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_predictions_user_id ON predictions(user_id);
+CREATE INDEX IF NOT EXISTS idx_predictions_created_at ON predictions(created_at);

@@ -21,6 +21,12 @@ class Settings(BaseSettings):
     DEFAULT_FORECAST_HORIZON_SHORT: int = 7
     DEFAULT_FORECAST_HORIZON_LONG: int = 30
     
+    # Security & Auth Settings
+    JWT_SECRET_KEY: str = Field(default="restockai_super_secret_jwt_key_2026_production_safe")
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440 # 24 hours
+    CORS_ORIGINS: str = "*"
+
     # LLM Settings
     ANTHROPIC_API_KEY: str = Field(default="")
     LLM_MODEL: str = "claude-3-5-sonnet-20241022"
