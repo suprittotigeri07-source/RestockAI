@@ -220,7 +220,7 @@ SystemLog      ->  system_logs table
 - Creates the SQLAlchemy **engine** (connects to SQLite or PostgreSQL based on `.env`)
 - Provides `get_db()` dependency injection for FastAPI routes
 - Provides `get_db_session()` context manager for ML pipeline and ETL code
-- `init_db()` creates all tables automatically on first run
+- `init_db()` creates all tables automatically on first run and auto-seeds default demo accounts (`suprit@restockai.io` and `analyst@company.com`)
 
 ---
 
