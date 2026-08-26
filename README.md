@@ -21,22 +21,46 @@
 
 ## 🖼️ Application Screenshots & Output Showcase
 
-Add your output screenshots to the `assets/` folder to display them here.
+### 🏠 Landing Page
 
-| Screenshot | Description |
-| :--- | :--- |
-| ![Landing Page](<img width="1920" height="1080" alt="Screenshot (73)" src="https://github.com/user-attachments/assets/81174029-16f4-4f01-9629-8ca71d8fdd85" />
-) | **Landing Page** — Platform overview & feature highlights |
-| ![Dashboard](<img width="1920" height="1080" alt="Screenshot (60)" src="https://github.com/user-attachments/assets/8b6e56b5-5b29-4c9e-b4d0-50d7d283efb8" />
-) | **Executive Dashboard** — Real-time analytics, demand stats & stock status |
-| ![Demand Forecasting](<img width="1920" height="1080" alt="Screenshot (61)" src="https://github.com/user-attachments/assets/7a2a4fae-d315-4028-aedd-d3a240f336e3" />
-) | **Demand Prediction** — 7/30-day forecast, safety stock metrics & Claude LLM rationale |
-| ![Store Intelligence](<img width="1920" height="1080" alt="Screenshot (63)" src="https://github.com/user-attachments/assets/df3f789d-e37c-452d-bfd0-6db6473228a2" />
-) | **Store Intelligence** — Restock urgency matrix (CRITICAL / MODERATE / HEALTHY) |
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/81174029-16f4-4f01-9629-8ca71d8fdd85" alt="RestockAI Landing Page" width="100%">
+</p>
+
+**Landing Page** — Platform overview and feature highlights.
 
 ---
 
-## ✨ Core Features
+### 📊 Executive Dashboard
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8b6e56b5-5b29-4c9e-b4d0-50d7d283efb8" alt="RestockAI Executive Dashboard" width="100%">
+</p>
+
+**Executive Dashboard** — Real-time analytics, demand statistics, and inventory status.
+
+---
+
+### 📈 Demand Forecasting
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7a2a4fae-d315-4028-aedd-d3a240f336e3" alt="RestockAI Demand Forecasting" width="100%">
+</p>
+
+**Demand Prediction** — 7/30-day forecasts, safety-stock metrics, and Claude AI-generated reasoning.
+
+---
+
+### 🏪 Store Intelligence
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/df3f789d-e37c-452d-bfd0-6db6473228a2" alt="RestockAI Store Intelligence" width="100%">
+</p>
+
+**Store Intelligence** — Restock urgency matrix showing **CRITICAL**, **MODERATE**, and **HEALTHY** inventory conditions.
+
+
+## ✨ Core Features 
 
 - 📈 **Dual-Model Demand Forecasting**: Automatically evaluates **Prophet** (seasonality) and **XGBoost** (regression) per store-item pair and selects the best model using MAPE backtesting.
 - 🤖 **AI-Powered Explanations**: Integrates **Anthropic Claude 3.5 Sonnet** to generate clear, 1-sentence decision rationales for inventory managers.
