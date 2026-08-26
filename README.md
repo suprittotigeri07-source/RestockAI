@@ -14,10 +14,7 @@
 
 | Resource | Link | Description |
 | :--- | :--- | :--- |
-| 🌐 **Live Application** | [restockai.vercel.app](https://your-deployment-link.vercel.app) | Interactive React Web Application |
-| ⚡ **REST API Docs (Swagger)** | [api.restockai.com/docs](https://your-api-link.onrender.com/docs) | Interactive FastAPI OpenAPI documentation |
-| 📊 **API Documentation (Redoc)** | [api.restockai.com/redoc](https://your-api-link.onrender.com/redoc) | Clean API Reference |
-
+| 🌐 **Live Application** | [restockai.vercel.app](https://restockai-4rc4.onrender.com) | Interactive React Web Application |
 > 💡 *Replace the placeholder URLs above with your actual deployed frontend and backend links.*
 
 ---
@@ -28,10 +25,14 @@ Add your output screenshots to the `assets/` folder to display them here.
 
 | Screenshot | Description |
 | :--- | :--- |
-| ![Landing Page](assets/landing_page.png) | **Landing Page** — Platform overview & feature highlights |
-| ![Dashboard](assets/dashboard.png) | **Executive Dashboard** — Real-time analytics, demand stats & stock status |
-| ![Demand Forecasting](assets/prediction_result.png) | **Demand Prediction** — 7/30-day forecast, safety stock metrics & Claude LLM rationale |
-| ![Store Intelligence](assets/store_intelligence.png) | **Store Intelligence** — Restock urgency matrix (CRITICAL / MODERATE / HEALTHY) |
+| ![Landing Page](<img width="1920" height="1080" alt="Screenshot (73)" src="https://github.com/user-attachments/assets/81174029-16f4-4f01-9629-8ca71d8fdd85" />
+) | **Landing Page** — Platform overview & feature highlights |
+| ![Dashboard](<img width="1920" height="1080" alt="Screenshot (60)" src="https://github.com/user-attachments/assets/8b6e56b5-5b29-4c9e-b4d0-50d7d283efb8" />
+) | **Executive Dashboard** — Real-time analytics, demand stats & stock status |
+| ![Demand Forecasting](<img width="1920" height="1080" alt="Screenshot (61)" src="https://github.com/user-attachments/assets/7a2a4fae-d315-4028-aedd-d3a240f336e3" />
+) | **Demand Prediction** — 7/30-day forecast, safety stock metrics & Claude LLM rationale |
+| ![Store Intelligence](<img width="1920" height="1080" alt="Screenshot (63)" src="https://github.com/user-attachments/assets/df3f789d-e37c-452d-bfd0-6db6473228a2" />
+) | **Store Intelligence** — Restock urgency matrix (CRITICAL / MODERATE / HEALTHY) |
 
 ---
 
