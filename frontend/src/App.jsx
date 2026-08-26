@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
+import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -59,15 +60,15 @@ function AppContent() {
     );
   }
 
-  // Unauthenticated routing
+  // Unauthenticated routing - Show Modern Landing Page with Integrated Auth Card
   if (!isAuthenticated) {
     if (currentPage === 'register') {
-      return <Register onNavigate={(p) => setCurrentPage(p)} />;
+      return <LandingPage initialTab="register" onNavigate={(p) => setCurrentPage(p)} />;
     }
     if (currentPage === 'forgot-password') {
-      return <ForgotPassword onNavigate={(p) => setCurrentPage(p)} />;
+      return <LandingPage initialTab="forgot" onNavigate={(p) => setCurrentPage(p)} />;
     }
-    return <Login onNavigate={(p) => setCurrentPage(p)} />;
+    return <LandingPage initialTab="login" onNavigate={(p) => setCurrentPage(p)} />;
   }
 
   const navigate = (page, options = {}) => {
