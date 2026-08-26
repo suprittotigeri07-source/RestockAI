@@ -1,7 +1,26 @@
 /**
  * Centralized API Client with JWT Bearer Token Support & Error Handling
  */
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const rawBase = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+
+// Normalize API_BASE: trim whitespace, remove trailing slashes, ensure correct scheme
+const normalizeApiBase = (url) => {
+  let clean = (url || '').trim();
+  // Strip any accidental leading relative path if pasted like /api/v1http...
+  if (clean.includes('http://') || clean.includes('https://')) {
+    const httpIndex = clean.indexOf('http');
+    clean = clean.slice(httpIndex);
+  }
+  clean = clean.replace(/\/+$/, '');
+  // If user provided base without /api/v1, append it
+  if (!clean.endsWith('/api/v1')) {
+    clean = `${clean}/api/v1`;
+  }
+  return clean;
+};
+
+const API_BASE = normalizeApiBase(rawBase);
+
 
 class ApiClient {
   getToken() {
