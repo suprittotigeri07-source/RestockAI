@@ -34,6 +34,10 @@ export default function Register({ onNavigate }) {
       setClientError('Password must be at least 6 characters long.');
       return;
     }
+    if (!hasNumber && !hasSpecial) {
+      setClientError('Password must contain at least one digit or special character (e.g. 1, !, @).');
+      return;
+    }
     if (!isMatch) {
       setClientError('Password and confirmation password do not match.');
       return;

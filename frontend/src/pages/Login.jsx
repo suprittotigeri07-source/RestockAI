@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, TrendingUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,6 +9,11 @@ export default function Login({ onNavigate }) {
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [clientError, setClientError] = useState('');
+
+  // Clear any stale auth errors from previous sessions when this page mounts
+  useEffect(() => {
+    setAuthError(null);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

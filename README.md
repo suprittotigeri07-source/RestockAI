@@ -1,342 +1,1877 @@
-# 📦 RestockAI — Production Multi-User Prediction & Inventory Optimization Web Application
+# RestockAI — AI-Powered Retail Inventory Intelligence Platform
 
-RestockAI is an end-to-end, production-grade **multi-user demand forecasting and inventory optimization platform**. It allows users to securely authenticate, define dynamic product/market parameters, execute real-time machine-learning inferences powered by **XGBoost Regressors & Elasticity Models**, inspect isolated prediction histories, and automate retail replenishment workflows.
-
----
-
-## 🌐 Live Deployment & Demo Links
-
-Access the deployed instances and documentation:
-
-| Service | Link | Status |
-| :--- | :--- | :--- |
-| 🚀 **Live Web Application (Frontend)** | [https://restockai-app.vercel.app](https://restockai-app.vercel.app) *(Replace with your deployment URL)* | `Live / Production` |
-| ⚡ **FastAPI Backend & Swagger API Docs** | [https://api.restockai.com/docs](https://api.restockai.com/docs) *(Replace with your API URL)* | `Active` |
-| 🩺 **Backend Health Check** | [https://api.restockai.com/api/v1/health](https://api.restockai.com/api/v1/health) | `200 OK` |
+> **RestockAI** is a production-grade, full-stack intelligent inventory management system that combines ML demand forecasting (Facebook Prophet + XGBoost), Anthropic Claude LLM-generated restock rationale, a RESTful FastAPI backend, and a React + Vite SPA frontend — all built for real-time, multi-user retail decision support.
 
 ---
 
-## 🌟 Website Frontpage & Landing Portal
+## Table of Contents
 
-The RestockAI frontpage serves as the public entry point for visitors, providing an interactive showcase of platform features and an integrated authentication suite.
-
-### Key Sections of the Frontpage:
-* **Hero Banner & Value Proposition:** Highlighting real-time AI replenishment intelligence and ROI.
-* **Interactive Feature Showcase:** Highlighting XGBoost forecasting, dynamic schema generation, and multi-store analytics.
-* **Integrated Authentication Portal:** Embedded Login, Registration, and Password Reset cards with smooth tab switching.
-* **Enterprise Security Highlights:** Visualizing zero cross-talk, bcrypt encryption, and JWT token authorization.
-
-<!-- Frontpage Showcase (Add your landing page screenshot below) -->
-<p align="center">
-  <img width="1920" height="1080" alt="RestockAI Frontpage & Landing Portal" src="https://github.com/user-attachments/assets/790f3dff-4a1e-4fc6-bcf3-3d012db20a24" />
-</p>
-
----
-
-## 🚀 Key Features
-
-* **🔐 Multi-User Authentication & Security**
-  * Secure bcrypt password hashing with automatic salt generation.
-  * Signed JWT bearer token authorization with strict per-user data isolation.
-  * Registration, Login, Session Persistence, and Token-based Account Recovery workflows.
-
-* **📈 Real-Time ML Demand Predictions (Non-Hardcoded)**
-  * Dynamic input feature schema (`/api/v1/model/schema`) with live form generation.
-  * Multi-feature preprocessing including price elasticity, promotional multipliers, lead times, seasonality, and demand volatility.
-  * 90% statistical prediction intervals (`lower_bound` & `upper_bound`) and realistic confidence scoring.
-
-* **📊 User Dashboard & Isolated Prediction History**
-  * Personalized user workspace (`Welcome, <Name> 👋`).
-  * Instant search, category filtering, column sorting, and pagination.
-  * Detailed inspection of past model runs with complete parameter breakdowns.
-
-* **💾 Saved Feature Datasets**
-  * Save custom parameter scenarios.
-  * Rerun saved scenarios with a single click.
-
-* **🏬 Retail Store Replenishment Engine**
-  * Multi-store inventory level monitoring.
-  * Automated safety stock calculations.
-  * AI-powered replenishment explanations with urgency ratings.
-  * Google Sheets and CSV export support.
+1. [Project Overview](#1-project-overview)
+2. [System Architecture](#2-system-architecture)
+3. [Technology Stack](#3-technology-stack)
+4. [Directory Structure](#4-directory-structure)
+5. [Core Features](#5-core-features)
+6. [Database Schema](#6-database-schema)
+7. [ML Engine — Demand Forecasting](#7-ml-engine--demand-forecasting)
+8. [REST API Reference](#8-rest-api-reference)
+9. [Data Pipeline — ETL](#9-data-pipeline--etl)
+10. [LLM Explainer — Claude Integration](#10-llm-explainer--claude-integration)
+11. [Frontend — React SPA](#11-frontend--react-spa)
+12. [Authentication and Security](#12-authentication-and-security)
+13. [Configuration and Environment](#13-configuration-and-environment)
+14. [Docker and Deployment](#14-docker-and-deployment)
+15. [Testing](#15-testing)
+16. [Development Setup](#16-development-setup)
+17. [API Schemas Reference](#17-api-schemas-reference)
+18. [Data Flow Diagrams](#18-data-flow-diagrams)
 
 ---
 
-## 📋 What Data Is Used? (Simple & Easy Guide)
+## 1. Project Overview
 
-RestockAI uses everyday retail and store data to predict how many items you will sell and when you need to order more. You don't need a data science background to use it!
+### What Is RestockAI?
 
-Here is a simple breakdown of the data types used:
+RestockAI is an end-to-end AI-powered inventory intelligence platform for retail businesses. It ingests raw point-of-sale (POS) data, trains competing ML models per store-item pair, selects the best-performing model via backtested MAPE/RMSE comparison, and surfaces real-time reorder recommendations augmented with natural-language explanations generated by Anthropic Claude 3.5 Sonnet.
 
-### 1. 📥 Input Data (What You Provide to the AI)
+### Business Problem Solved
 
-| Data Name | Data Type | Example Value | Why the AI Needs It (In Simple Words) |
-| :--- | :--- | :--- | :--- |
-| **Store Location** | Selection (Text) | `Downtown Flagship` | Different store locations have different customer foot traffic and buying habits. |
-| **Product Category** | Selection (Text) | `Groceries`, `Electronics` | Helps the AI understand how quickly this type of item usually sells (food sells faster than tech). |
-| **Item Name** | Text (String) | `Organic Milk 1 Gallon` | A clear label so you can identify and track your product. |
-| **Selling Price ($)** | Number (Decimal) | `$4.99` | Higher prices can lower demand, while lower prices increase demand (price elasticity). |
-| **Wholesale Cost ($)** | Number (Decimal) | `$2.85` | What you pay the supplier, used to calculate profit margins and reorder costs. |
-| **Current Stock on Hand** | Number (Whole count) | `45 units` | How many items are sitting on your shelves right now. |
-| **Recent Daily Sales** | Number (Decimal) | `14.5 units / day` | Your baseline speed of sales over the past 30 days. |
-| **Supplier Lead Time** | Number (Days) | `3 days` | How many days it takes for your supplier to deliver fresh stock after you order. |
-| **Discount / Promotion** | Percentage (%) | `10% off` | Special discounts bring extra customers and boost sales temporarily. |
-| **Season or Event** | Selection (Factor) | `Holiday Rush` or `Regular` | Tells the AI if a festival, weekend, or holiday will bring higher-than-normal sales. |
-| **Forecast Horizon** | Time Window (Days) | `7 Days` or `30 Days` | How far into the future you want the forecast (next week or next month). |
+Traditional retail inventory management suffers from:
+- **Reactive restocking** — orders placed only after stockout occurs
+- **Manual guesswork** — over-reliance on store manager intuition without quantitative demand signals
+- **No confidence bounds** — no understanding of forecast uncertainty leading to over/under-ordering
+- **Static safety stock** — fixed buffer levels that do not adapt to product category elasticity or seasonal shifts
+- **No rationale** — inventory recommendations without explanations that managers can act on confidently
 
----
+### How RestockAI Solves It
 
-### 2. 📤 Output Data (What the AI Gives Back to You)
+| Problem | RestockAI Solution |
+|---|---|
+| Reactive stockouts | 7-day and 30-day proactive demand forecasts |
+| Manual guesswork | ML-powered demand prediction with elasticity modeling |
+| No confidence bounds | 90% CI lower/upper bounds per forecast |
+| Static safety stock | Dynamic safety stock: Z(95%) x std_daily x sqrt(lead_time) |
+| No explainability | Claude LLM generates 1-sentence action rationale per item |
+| Single user | Full multi-user JWT authentication with user data isolation |
 
-Once the machine learning model finishes calculating, it produces clear, actionable results:
+### Key Numbers
 
-* 🎯 **Predicted Demand (Units):** The exact estimated number of units customers will buy during your chosen time period.
-* 📊 **Confidence Interval (Low to High Range):** A safety range (e.g., *Between 105 and 125 units*) with 90% statistical certainty.
-* 🛡️ **Safety Stock (Units):** Extra buffer stock recommended to keep on hand so you never run out during unexpected surges or delivery delays.
-* 🛒 **Recommended Reorder Quantity:** The exact number of units you should order from your supplier today to stay fully stocked without over-ordering.
-* ⚠️ **Stockout Risk Level:** A color-coded urgency tag (**LOW**, **MEDIUM**, or **HIGH / CRITICAL**) telling you if an item is about to go out of stock soon.
-
----
-
-## 🖥️ Output & Application Screenshots
-
-The following screenshots demonstrate the user interface across key modules:
+- **5 store locations** modeled out of the box (Downtown, Suburban, Metro, Airport, West End)
+- **7 product categories** with distinct elasticity and volatility profiles
+- **2 ML model families** competing per store-item pair (Prophet + XGBoost)
+- **2 forecast horizons** (7-day short-term, 30-day monthly planning)
+- **3 urgency tiers** (CRITICAL at 2 days or less, MODERATE at 4.5 days or less, HEALTHY)
+- **90% confidence intervals** on every demand prediction
 
 ---
 
-### 1. 🌐 Landing Page & Frontpage
-The public-facing portal for onboarding, feature overview, and secure authentication.
+## 2. System Architecture
 
-<p align="center">
-  <img width="1920" height="1080" alt="RestockAI Landing Page" src="https://github.com/user-attachments/assets/790f3dff-4a1e-4fc6-bcf3-3d012db20a24" />
-</p>
+```
++-------------------------------------------------------------------------+
+|                         RestockAI System                                |
+|                                                                         |
+|  +--------------+      +------------------------------------------+    |
+|  |  React SPA   |      |           FastAPI Backend                |    |
+|  |  (Vite)      | HTTP |                                          |    |
+|  |  Port 5173   |<---->|  /api/v1/*  (routes.py)                 |    |
+|  |              |      |                                          |    |
+|  |  Pages:      |      |  +-------------+  +------------------+  |    |
+|  |  LandingPage |      |  | Auth Layer   |  | Retail Engine    |  |    |
+|  |  Dashboard   |      |  | JWT/bcrypt   |  | Recommendations  |  |    |
+|  |  AddData     |      |  +-------------+  +------------------+  |    |
+|  |  History     |      |  +-------------+  +------------------+  |    |
+|  |  StoreIntel  |      |  | Prediction  |  | LLM Explainer    |  |    |
+|  |  Profile     |      |  | Service     |  | (Claude 3.5)     |  |    |
+|  +--------------+      |  +-------------+  +------------------+  |    |
+|                        +------------------------------------------+    |
+|                                     |                                   |
+|                         +-----------v------------+                      |
+|                         |     SQLAlchemy ORM      |                     |
+|                         +-----------+------------+                      |
+|                                     |                                   |
+|               +---------------------+---------------------+             |
+|               |                     |                     |             |
+|     +---------+-----+   +-----------+-------+  +---------+-------+    |
+|     |   PostgreSQL   |   |   ML Engine      |  |  ETL Pipeline   |    |
+|     |   (prod)  /   |   |   ForecastPipeline|  |  data/raw/*.csv |    |
+|     |   SQLite (dev)|   |   Prophet/XGBoost |  |                 |    |
+|     +---------------+   +-----------------+    +-----------------+    |
++-------------------------------------------------------------------------+
+```
 
----
+### Component Responsibilities
 
-### 2. 📊 Dashboard
-The personalized user dashboard providing an overview of demand forecasts, inventory alerts, and key performance indicators.
-
-<p align="center">
-  <img width="1920" height="1080" alt="RestockAI Dashboard" src="https://github.com/user-attachments/assets/790f3dff-4a1e-4fc6-bcf3-3d012db20a24" />
-</p>
-
----
-
-### 3. 🔮 Prediction Studio
-Allows users to enter dynamic product and market parameters such as price, promotion discounts, lead time, seasonality, and demand volatility to generate real-time inferences.
-
-<p align="center">
-  <img width="1920" height="1080" alt="RestockAI Prediction Studio" src="https://github.com/user-attachments/assets/2b012936-0088-4b68-aada-16361ae2b0d0" />
-</p>
-
----
-
-### 4. 📈 Prediction History
-Search, filter, sort, and inspect past prediction runs with complete transparency on model inputs and confidence metrics.
-
-<p align="center">
-  <img width="1920" height="1080" alt="RestockAI Prediction History" src="https://github.com/user-attachments/assets/bfeffb4f-b49a-49f0-bc31-4458b5bc7c92" />
-</p>
-
----
-
-### 5. 🏬 Store Replenishment
-Monitors multi-store inventory levels and generates AI-assisted reorder quantities with safety stock calculations.
-
-<p align="center">
-  <img width="1920" height="1080" alt="RestockAI Store Replenishment" src="https://github.com/user-attachments/assets/26fec34e-ab29-4798-8205-a372f5d56ae3" />
-</p>
-
----
-
-### 6. 👤 User Profile & Settings
-Manage account credentials, view user ID, role permissions, and active session status.
-
-<p align="center">
-  <img width="1920" height="1080" alt="RestockAI Profile" src="https://github.com/user-attachments/assets/f0992b0b-e719-4ba8-b5c1-8a2af8789761" />
-</p>
+| Component | Responsibility |
+|---|---|
+| `frontend/` | React 19 SPA — data entry, prediction results, store dashboard, history |
+| `src/api/` | FastAPI router, Pydantic schemas, JWT auth middleware, LLM explainer |
+| `src/ml_engine/` | Prophet and XGBoost models, model evaluator, prediction service, retrain scheduler |
+| `src/data_pipeline/` | ETL ingestion from CSV, schema validation, quarantine, DB upsert |
+| `src/database/` | SQLAlchemy ORM models, DB connection management |
+| `src/utils/` | Logger, config settings, security helpers (bcrypt, JWT) |
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## 3. Technology Stack
 
-```text
+### Backend
+
+| Library | Version | Purpose |
+|---|---|---|
+| Python | >= 3.11 | Runtime |
+| FastAPI | >= 0.115.0 | REST API framework with async support |
+| Uvicorn | >= 0.30.0 | ASGI server |
+| SQLAlchemy | >= 2.0.35 | ORM, connection pooling |
+| Pydantic | >= 2.9.0 | Request/response schema validation |
+| pydantic-settings | >= 2.5.0 | .env configuration management |
+| PyJWT | >= 2.8.0 | JWT token generation and validation |
+| bcrypt | >= 4.1.0 | Password hashing |
+| email-validator | >= 2.0.0 | Email address validation |
+| psycopg2-binary | >= 2.9.9 | PostgreSQL driver |
+| python-dotenv | >= 1.0.1 | .env file loading |
+| slowapi | >= 0.1.9 | API rate limiting |
+| httpx | >= 0.27.0 | Async HTTP client |
+
+### Machine Learning
+
+| Library | Version | Purpose |
+|---|---|---|
+| Prophet | >= 1.1.5 | Time-series seasonal forecasting (Facebook) |
+| XGBoost | >= 2.1.0 | Gradient-boosted tree regression |
+| scikit-learn | >= 1.5.0 | Feature engineering, GBR fallback |
+| statsmodels | >= 0.14.2 | Holt-Winters exponential smoothing fallback |
+| pandas | >= 2.2.0 | Dataframe processing |
+| numpy | >= 1.26.0 | Numerical computation |
+
+### AI and Integrations
+
+| Library | Version | Purpose |
+|---|---|---|
+| anthropic | >= 0.34.0 | Claude 3.5 Sonnet LLM API client |
+| gspread | >= 6.1.0 | Google Sheets export via service account |
+| google-auth | >= 2.34.0 | Google OAuth2 credentials |
+| schedule | >= 1.2.2 | Background ML retrain cron scheduler |
+
+### Frontend
+
+| Library | Version | Purpose |
+|---|---|---|
+| React | ^19.2.8 | UI component library |
+| React DOM | ^19.2.8 | DOM rendering |
+| Vite | ^8.2.0 | Build tool and dev server |
+| lucide-react | ^1.33.0 | Icon library |
+| clsx | ^2.1.1 | Conditional className utility |
+| tailwind-merge | ^3.6.0 | Tailwind class merging |
+| @vitejs/plugin-react | ^6.0.4 | Vite React transform plugin |
+
+### Testing
+
+| Library | Version | Purpose |
+|---|---|---|
+| pytest | >= 8.3.0 | Test framework |
+| requests | >= 2.32.0 | HTTP test client |
+| FastAPI TestClient | built-in | ASGI integration testing |
+
+---
+
+## 4. Directory Structure
+
+```
 RestockAI/
-├── src/
-│   ├── api/
-│   │   ├── auth.py          # JWT authentication & password hashing
-│   │   ├── main.py          # FastAPI application entrypoint
-│   │   ├── routes.py        # API endpoints (predictions, stores, user-data)
-│   │   └── schemas.py       # Pydantic request/response models
-│   │
-│   ├── database/
-│   │   ├── connection.py    # Database engine & session management
-│   │   └── models.py        # SQLAlchemy relational data models
-│   │
-│   ├── ml_engine/
-│   │   ├── prediction_service.py  # Inference orchestration
-│   │   ├── xgboost_model.py       # ML regression models & pipeline
-│   │   ├── features.py            # Feature engineering & transformations
-│   │   └── forecast_pipeline.py   # Forecast calculation pipeline
-│   │
-│   └── utils/
-│       ├── config.py        # Environment configuration
-│       ├── security.py      # Token encoding/decoding & bcrypt hashing
-│       └── logger.py        # Structured logging setup
-│
-├── frontend/
-│   ├── src/
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx   # Global authentication state
-│   │   ├── services/
-│   │   │   └── api.js            # Axios client with JWT interceptors
-│   │   ├── pages/
-│   │   │   ├── LandingPage.jsx   # Website Frontpage & Auth
-│   │   │   ├── Dashboard.jsx     # Overview & analytics
-│   │   │   ├── PredictionStudio.jsx # Live ML form
-│   │   │   ├── PredictionHistory.jsx# Historical runs
-│   │   │   ├── StoreReplenishment.jsx # Inventory reorder engine
-│   │   │   └── Profile.jsx       # Account management
-│   │   └── App.jsx
-│
-└── tests/                   # Automated pytest suite
+|-- .env.example                    # Environment variable template
+|-- .gitignore                      # Git ignore rules
+|-- requirements.txt                # Python dependencies
+|-- docker-compose.yml              # Docker services (postgres, api, ml-scheduler)
+|-- README.md                       # Project documentation
+|-- PROJECT_GUIDE.md                # Detailed developer guide
+|-- walkthrough.md                  # Implementation walkthrough
+|
+|-- assets/                         # Static assets (logos, images)
+|
+|-- data/
+|   |-- raw/                        # Source CSV files for ETL ingestion
+|   |   |-- stores.csv              # Store master data
+|   |   |-- items.csv               # Item/SKU master data
+|   |   `-- sales*.csv              # Historical daily sales records
+|   |-- quarantine/                 # Malformed rows rejected during ETL
+|   `-- schema.sql                  # PostgreSQL schema DDL (for Docker init)
+|
+|-- docker/
+|   |-- Dockerfile.api              # API service container definition
+|   `-- Dockerfile.ml               # ML scheduler container definition
+|
+|-- frontend/                       # React + Vite Single Page Application
+|   |-- index.html                  # HTML entry point
+|   |-- package.json                # npm dependencies and scripts
+|   |-- vite.config.js              # Vite build config (API proxy)
+|   |-- vercel.json                 # Vercel deployment config
+|   `-- src/
+|       |-- main.jsx                # React root mount
+|       |-- App.jsx                 # App router and layout
+|       |-- App.css                 # Global app styles
+|       |-- index.css               # Base reset and design tokens
+|       |-- context/
+|       |   `-- AuthContext.jsx     # React auth context provider
+|       |-- services/
+|       |   `-- api.js              # API client (fetch wrapper)
+|       `-- pages/
+|           |-- LandingPage.jsx     # Marketing landing page
+|           |-- Login.jsx           # User login form
+|           |-- Register.jsx        # New account registration
+|           |-- ForgotPassword.jsx  # Password reset form
+|           |-- Dashboard.jsx       # Main app hub and prediction stats
+|           |-- AddData.jsx         # Dynamic input form (schema-driven)
+|           |-- PredictionResult.jsx# Individual prediction detail
+|           |-- History.jsx         # Paginated prediction history
+|           |-- StoreIntelligence.jsx # Retail store restock recommendations
+|           |-- UserDataList.jsx    # Saved datasets management
+|           `-- Profile.jsx         # User profile page
+|
+|-- src/                            # Python backend source
+|   |-- __init__.py
+|   |-- api/
+|   |   |-- main.py                 # FastAPI app factory and lifespan
+|   |   |-- routes.py               # All REST endpoint definitions (758 lines)
+|   |   |-- schemas.py              # Pydantic request/response models
+|   |   |-- auth.py                 # JWT dependency (get_current_user)
+|   |   `-- llm_explainer.py        # Anthropic Claude reasoning layer
+|   |-- data_pipeline/
+|   |   |-- __init__.py
+|   |   |-- etl.py                  # ETL pipeline (ingest -> validate -> load)
+|   |   |-- generate_synthetic_data.py # Dev data generator
+|   |   `-- schema_validator.py     # Row-level data validation rules
+|   |-- database/
+|   |   |-- __init__.py
+|   |   |-- connection.py           # Engine factory, session management
+|   |   `-- models.py               # SQLAlchemy ORM table definitions
+|   |-- frontend/
+|   |   `-- sheets_exporter.py      # Google Sheets / CSV fallback exporter
+|   |-- ml_engine/
+|   |   |-- evaluator.py            # Model comparison (MAPE/RMSE backtest)
+|   |   |-- features.py             # Time-series feature engineering
+|   |   |-- forecast_pipeline.py    # End-to-end batch forecasting pipeline
+|   |   |-- prediction_service.py   # Single-prediction ML service + elasticity
+|   |   |-- prophet_model.py        # Prophet forecaster with HW fallback
+|   |   |-- retrain_scheduler.py    # Background cron retraining scheduler
+|   |   `-- xgboost_model.py        # XGBoost forecaster with autoregressive prediction
+|   `-- utils/
+|       |-- config.py               # Pydantic settings (reads .env)
+|       |-- logger.py               # Structured logging setup
+|       `-- security.py             # Password hashing, JWT creation, validation
+|
+`-- tests/
+    |-- __init__.py
+    |-- test_api.py                 # API integration tests
+    |-- test_etl.py                 # ETL pipeline unit tests
+    |-- test_ml_forecasting.py      # ML model unit tests
+    `-- test_multi_user_prediction.py # Multi-user isolation tests
 ```
 
 ---
 
-## ⚡ Quick Start & Installation
+## 5. Core Features
 
-### 1. Prerequisites
-* Python 3.10+
-* Node.js 18+
+### 5.1 Real-Time Demand Forecasting
 
-### 2. Backend Setup
+- **Dual-model architecture**: Each store-item pair is evaluated against both Facebook Prophet and XGBoost via 14-day holdout backtesting.
+- **Automatic model selection**: The model with lower MAPE (Mean Absolute Percentage Error) is selected and retrained on the full dataset before generating forecasts.
+- **Horizons**: 7-day (short-term replenishment) and 30-day (monthly planning cycle) forecasts per store-item pair.
+- **Confidence intervals**: 90% prediction bounds from Prophet's `yhat_lower`/`yhat_upper`; heuristic +/-1.64*sigma from XGBoost.
+
+### 5.2 Price Elasticity and Promotional Lift Engine
+
+The `PredictionService` applies a demand elasticity model layered on top of historical sales velocity:
+
+```
+promo_lift           = 1 + (discount_pct / 100) x category_elasticity x 1.1
+predicted_daily_rate = daily_sales_avg x season_factor x promo_lift
+price_margin_ratio   = price / (unit_cost x 1.4)     [clamped 0.5 to 2.5]
+adjusted_daily_rate  = predicted_daily_rate / (price_margin_ratio ^ 0.35)
+```
+
+**Category Elasticity Table:**
+
+| Category | Elasticity | Demand Volatility |
+|---|---|---|
+| Groceries | 1.25 | 12% |
+| Beverages | 1.35 | 15% |
+| Electronics | 2.10 | 28% |
+| Home and Garden | 1.45 | 20% |
+| Apparel | 1.80 | 24% |
+| Health and Beauty | 1.10 | 10% |
+| Automotive | 1.15 | 18% |
+
+**Seasonal Demand Multipliers:**
+
+| Season | Multiplier |
+|---|---|
+| Regular | x1.00 |
+| Weekend Peak | x1.25 |
+| Holiday Rush | x1.65 |
+| Festival Season | x1.40 |
+| Off-Season | x0.80 |
+
+### 5.3 Dynamic Safety Stock and Reorder Engine
+
+Reorder quantities follow the standard service-level safety stock formula:
+
+```
+safety_stock       = ceil(1.65 x sigma_daily x sqrt(lead_time_days) + daily_rate x 1.5)
+reorder_point      = lead_time_demand + safety_stock
+recommended_reorder = max(0, ceil(predicted_total_demand + safety_stock - stock_on_hand))
+stockout_risk_days  = stock_on_hand / adjusted_daily_rate
+```
+
+**Urgency Classification:**
+
+| Tier | Condition |
+|---|---|
+| CRITICAL | stockout_risk_days <= lead_time_days + 1 OR stock < safety_stock |
+| MODERATE | stockout_risk_days <= lead_time_days x 2.2 OR recommended_reorder > 0 |
+| HEALTHY | All inventory metrics within safe margins |
+
+### 5.4 Claude LLM Explanation Engine
+
+Every restock recommendation is augmented with a concise, actionable 1-sentence rationale generated by Anthropic Claude 3.5 Sonnet:
+
+- **Live mode**: Calls `anthropic.messages.create()` with structured inventory context
+- **Cached mode**: LRU + MD5-keyed in-memory cache prevents redundant API calls
+- **Offline fallback**: Rule-based heuristic explanation generator activates when no API key is provided
+
+### 5.5 Multi-User Platform with JWT Auth
+
+- Secure registration with bcrypt password hashing and strength validation
+- JWT bearer tokens (HS256) with configurable expiry (default: 24 hours / 1440 minutes)
+- All prediction and user data records are strictly scoped to `user_id` — no cross-user data exposure
+- Batch prediction upload support (process entire CSV files server-side)
+- Paginated prediction history with full-text search and category filter
+
+### 5.6 ETL Pipeline
+
+- Reads CSV exports from `data/raw/`
+- Validates each row against business rules (non-negative stock, valid date, positive price, etc.)
+- Quarantines invalid rows to `data/quarantine/` with rejection reasons
+- Bulk-upserts valid data via `INSERT OR REPLACE` (SQLite) or `ON CONFLICT DO UPDATE` (PostgreSQL)
+- Streams large CSV files in 50,000-row chunks to prevent memory overflow
+- Logs execution stats and duration to the `system_logs` table
+
+### 5.7 Google Sheets Export
+
+- One-click export of store inventory recommendations to a Google Spreadsheet
+- Uses a service account credential file (`credentials.json`) via `gspread`
+- Falls back to local CSV file export when Google credentials are not configured
+
+---
+
+## 6. Database Schema
+
+The system uses SQLAlchemy ORM with support for both **SQLite** (development) and **PostgreSQL** (production).
+
+### Table: stores
+
+| Column | Type | Constraints | Description |
+|---|---|---|---|
+| `store_id` | VARCHAR(64) | PRIMARY KEY | Unique store identifier (e.g., STR_001) |
+| `name` | VARCHAR(255) | NOT NULL | Human-readable store name |
+| `region` | VARCHAR(64) | NOT NULL | Geographic region |
+| `created_at` | DATETIME | DEFAULT utcnow | Record creation timestamp |
+
+Relationships: one-to-many to `sales_daily` (cascade delete), one-to-many to `forecasts` (cascade delete)
+
+### Table: items
+
+| Column | Type | Constraints | Description |
+|---|---|---|---|
+| `item_id` | VARCHAR(64) | PRIMARY KEY | Unique SKU identifier (e.g., ITM_0001) |
+| `name` | VARCHAR(255) | NOT NULL | Product display name |
+| `category` | VARCHAR(64) | NOT NULL | Product category grouping |
+| `unit_cost` | NUMERIC(10,2) | NOT NULL | Wholesale cost per unit |
+| `created_at` | DATETIME | DEFAULT utcnow | Record creation timestamp |
+
+Relationships: one-to-many to `sales_daily` (cascade delete), one-to-many to `forecasts` (cascade delete)
+
+### Table: sales_daily
+
+Composite primary key on `(store_id, item_id, date)` — one row per store-item-date triple.
+
+| Column | Type | Constraints | Description |
+|---|---|---|---|
+| `store_id` | VARCHAR(64) | PK, FK -> stores | Store reference |
+| `item_id` | VARCHAR(64) | PK, FK -> items | Item reference |
+| `date` | DATE | PK | Calendar date of sales record |
+| `units_sold` | INTEGER | NOT NULL | Units sold on that day |
+| `stock_on_hand` | INTEGER | NOT NULL | Inventory available at end of day |
+| `price` | NUMERIC(10,2) | NOT NULL | Retail selling price on that day |
+| `created_at` | DATETIME | DEFAULT utcnow | Record creation timestamp |
+
+### Table: forecasts
+
+| Column | Type | Constraints | Description |
+|---|---|---|---|
+| `forecast_id` | VARCHAR(64) | PRIMARY KEY | Composite ID (e.g., FCST_STR_001_ITM_0001_7D_2026-08-26) |
+| `store_id` | VARCHAR(64) | FK -> stores | Store reference |
+| `item_id` | VARCHAR(64) | FK -> items | Item reference |
+| `forecast_date` | DATE | NOT NULL | Date when forecast was generated |
+| `horizon_days` | INTEGER | NOT NULL | Forecast horizon: 7 or 30 |
+| `predicted_demand` | NUMERIC(10,2) | NOT NULL | Total predicted demand units |
+| `lower_bound` | NUMERIC(10,2) | NOT NULL | 90% CI lower bound |
+| `upper_bound` | NUMERIC(10,2) | NOT NULL | 90% CI upper bound |
+| `model_used` | VARCHAR(64) | NOT NULL | Prophet, XGBoost, or Holt-Winters |
+| `model_mape` | NUMERIC(8,4) | NULLABLE | Backtested MAPE percentage |
+| `model_rmse` | NUMERIC(10,2) | NULLABLE | Backtested RMSE value |
+| `created_at` | DATETIME | DEFAULT utcnow | Record creation timestamp |
+
+### Table: users
+
+| Column | Type | Constraints | Description |
+|---|---|---|---|
+| `id` | VARCHAR(64) | PRIMARY KEY | User ID format: usr_hex12 |
+| `name` | VARCHAR(255) | NOT NULL | Display name |
+| `email` | VARCHAR(255) | UNIQUE, INDEX | Email address (lowercased, trimmed) |
+| `password_hash` | VARCHAR(255) | NOT NULL | bcrypt-hashed password |
+| `created_at` | DATETIME | DEFAULT utcnow | Registration timestamp |
+| `updated_at` | DATETIME | DEFAULT utcnow | Last update timestamp |
+
+Relationships: one-to-many to `user_data` (cascade delete), one-to-many to `predictions` (cascade delete)
+
+### Table: user_data
+
+Saved input feature datasets per user.
+
+| Column | Type | Constraints | Description |
+|---|---|---|---|
+| `id` | VARCHAR(64) | PRIMARY KEY | Dataset ID format: ud_hex12 |
+| `user_id` | VARCHAR(64) | FK -> users, INDEX | Owning user |
+| `title` | VARCHAR(255) | NULLABLE | Human-readable dataset label |
+| `input_data` | TEXT | NOT NULL | JSON-encoded feature dictionary |
+| `created_at` | DATETIME | DEFAULT utcnow | Creation timestamp |
+| `updated_at` | DATETIME | DEFAULT utcnow | Update timestamp |
+
+### Table: predictions
+
+Per-user ML prediction records.
+
+| Column | Type | Constraints | Description |
+|---|---|---|---|
+| `id` | VARCHAR(64) | PRIMARY KEY | Prediction ID format: pred_hex12 |
+| `user_id` | VARCHAR(64) | FK -> users, INDEX | Owning user |
+| `input_data` | TEXT | NOT NULL | JSON-encoded input features |
+| `prediction` | NUMERIC(10,2) | NOT NULL | Forecasted demand (total units) |
+| `confidence` | NUMERIC(5,2) | NOT NULL | Model confidence (%) |
+| `lower_bound` | NUMERIC(10,2) | NULLABLE | 90% CI lower bound |
+| `upper_bound` | NUMERIC(10,2) | NULLABLE | 90% CI upper bound |
+| `created_at` | DATETIME | DEFAULT utcnow | Prediction creation timestamp |
+
+### Table: system_logs
+
+Operational audit log for pipeline events.
+
+| Column | Type | Description |
+|---|---|---|
+| `log_id` | VARCHAR(64) | UUID log entry ID |
+| `timestamp` | DATETIME | Event timestamp |
+| `event_type` | VARCHAR(64) | e.g., ETL_RUN, ML_FORECAST_RUN |
+| `component` | VARCHAR(64) | e.g., ETLPipeline, ForecastPipeline |
+| `status` | VARCHAR(32) | SUCCESS, ERROR, or WARNING |
+| `details` | TEXT | Serialized stats or error trace |
+| `execution_time_ms` | INTEGER | Duration in milliseconds |
+
+### Entity Relationships
+
+```
+stores --+-----> sales_daily <----- items
+         |         (composite PK: store_id, item_id, date)
+         +-----> forecasts    <----- items
+
+users  --+-----> predictions
+         +-----> user_data
+```
+
+---
+
+## 7. ML Engine — Demand Forecasting
+
+### 7.1 Architecture Overview
+
+```
+Historical Sales (sales_daily table)
+          |
+          v
+ModelEvaluator.evaluate_and_select_best()
+          |
+     +----+----+
+     |         |
+Prophet    XGBoost
+(fit)      (fit)
+     |         |
+  predict   predict   [14-day holdout evaluation]
+     |         |
+  MAPE+RMSE  MAPE+RMSE
+          |
+     [Lower MAPE wins]
+          |
+     Refit on FULL dataset
+          |
+     predict(periods=30)   <- 30 daily rows
+          |
+     head(7)  -> 7D aggregate forecast
+     sum(30)  -> 30D aggregate forecast
+          |
+     Upsert into forecasts table
+```
+
+### 7.2 Prophet Forecaster (prophet_model.py)
+
+**Model Configuration:**
+```python
+Prophet(
+    yearly_seasonality=True,    # Captures annual demand patterns
+    weekly_seasonality=True,    # Captures weekend/weekday cycles
+    daily_seasonality=False,    # Not relevant for daily aggregated data
+    interval_width=0.90,        # 90% confidence intervals
+    growth="linear"             # Linear trend assumption
+)
+```
+
+**Fallback Chain (in order):**
+1. Facebook Prophet (primary)
+2. Statsmodels Holt-Winters Exponential Smoothing (seasonal_periods=7, additive trend and season)
+3. Rolling 14-day mean (last resort, zero-dependency baseline)
+
+**Output:** DataFrame with columns `forecast_date`, `predicted_demand`, `lower_bound`, `upper_bound`
+
+### 7.3 XGBoost Forecaster (xgboost_model.py)
+
+**Model Configuration:**
+```python
+XGBRegressor(
+    n_estimators=120,       # Number of boosting rounds
+    learning_rate=0.06,     # Step size shrinkage
+    max_depth=5,            # Tree depth
+    subsample=0.85,         # Row subsampling ratio
+    colsample_bytree=0.85,  # Feature subsampling ratio
+    random_state=42
+)
+```
+
+**Autoregressive Forecasting Loop:**
+
+For each future day i = 1 to periods:
+1. Append a placeholder row to the history buffer
+2. Recompute all lag/rolling features on the extended buffer
+3. Predict `units_sold` for the new row using trained model
+4. Update the placeholder with the prediction (so subsequent lags are correct)
+
+This enables fully autoregressive multi-step forecasting without data leakage.
+
+**Fallback:** `sklearn.GradientBoostingRegressor` when XGBoost is not available
+
+**Confidence Intervals:** Heuristic 90% CI using +/- 1.64 x std(last_14_day_units)
+
+### 7.4 Feature Engineering (features.py)
+
+Features extracted from the `sales_daily` time-series per store-item pair:
+
+| Feature | Description |
+|---|---|
+| `day_of_week` | 0=Monday through 6=Sunday |
+| `week_of_year` | ISO week number |
+| `month` | Calendar month (1-12) |
+| `is_weekend` | Binary flag (Saturday/Sunday = 1) |
+| `lag_1` | Units sold 1 day ago |
+| `lag_7` | Units sold 7 days ago |
+| `lag_14` | Units sold 14 days ago |
+| `rolling_mean_7` | 7-day rolling average sales |
+| `rolling_std_7` | 7-day rolling standard deviation of sales |
+| `price` | Current retail price |
+
+### 7.5 Model Evaluator (evaluator.py)
+
+```python
+# 80/20 train-test holdout split (last test_days=14 rows held out)
+train_df = df_sorted.iloc[:-14]
+test_df  = df_sorted.iloc[-14:]
+
+# Error Metrics
+MAPE = mean(|y_true - y_pred| / y_true) x 100
+RMSE = sqrt(mean((y_true - y_pred) squared))
+
+# Model Selection
+if xgb_mape <= prophet_mape:
+    winner = "XGBoost"
+else:
+    winner = "Prophet"
+
+# Winner is refit on the FULL dataset before forecasting
+```
+
+**Minimum Data Requirements:**
+- At least 7 rows of history for forecasting
+- At least 28 rows for holdout evaluation (otherwise XGBoost is used by default with assumed metrics)
+
+### 7.6 PredictionService — Single Prediction (prediction_service.py)
+
+Used for real-time per-user predictions (independent of the ETL pipeline). Implements the elasticity demand engine.
+
+**Input Features (11 fields via dynamic schema):**
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `store_id` | select | STR_001 | Store location |
+| `category` | select | Groceries | Product category |
+| `item_name` | text | Premium Organic Whole Milk 1 Gal | SKU name |
+| `price` | number | 4.99 | Retail selling price ($) |
+| `unit_cost` | number | 2.85 | Wholesale purchase cost ($) |
+| `stock_on_hand` | slider | 45 | Current inventory units (0-500) |
+| `daily_sales_avg` | number | 14.5 | Average daily units sold (last 30d) |
+| `lead_time_days` | slider | 3 | Supplier delivery window (1-30 days) |
+| `discount_pct` | slider | 0 | Promotional discount percentage (0-75%) |
+| `season` | select | Regular | Seasonal demand multiplier |
+| `horizon_days` | radio | 7 | 7 or 30 day forecast |
+
+**Output Metrics:**
+
+| Field | Description |
+|---|---|
+| `prediction` | Total forecasted demand units over horizon |
+| `confidence` | Model confidence % (range: 68 to 98.5%) |
+| `lower_bound` | 90% CI lower bound |
+| `upper_bound` | 90% CI upper bound |
+| `metrics.predicted_daily_rate` | Adjusted daily demand rate |
+| `metrics.recommended_reorder_qty` | Recommended reorder units |
+| `metrics.safety_stock` | Calculated safety stock buffer |
+| `metrics.reorder_point` | Reorder Point (ROP) |
+| `metrics.stockout_risk_days` | Days until stockout at current rate |
+| `metrics.urgency` | CRITICAL, MODERATE, or HEALTHY |
+| `metrics.estimated_reorder_cost` | recommended_reorder x unit_cost |
+| `metrics.estimated_revenue` | predicted_demand x price x (1 - discount) |
+| `metrics.estimated_profit` | revenue minus (predicted_demand x unit_cost) |
+| `metrics.insights` | List of 3-5 plain-English insight strings |
+
+**Confidence Score Formula:**
+```
+base_confidence = 94.0 (7-day) or 87.5 (30-day)
+vol_penalty     = category_volatility x 15.0
+discount_penalty = 3.0 if discount_pct > 50 else 0.0
+confidence_pct  = clamp(base_confidence - vol_penalty - discount_penalty, 68.0, 98.5)
+```
+
+### 7.7 Retrain Scheduler (retrain_scheduler.py)
+
+A background scheduler using the `schedule` library runs `ForecastPipeline.run()` on a configurable cron interval (default: daily). Deployed as the `ml-scheduler` Docker service.
+
+---
+
+## 8. REST API Reference
+
+**Base URL:** `http://localhost:8000/api/v1`
+
+**Authentication:** Protected endpoints require `Authorization: Bearer <token>` header (marked with lock below).
+
+### 8.1 Authentication Endpoints
+
+---
+
+#### POST /auth/register
+
+Registers a new user and returns a JWT access token.
+
+**Request Body:**
+```json
+{
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "password": "SecurePass123!",
+  "confirm_password": "SecurePass123!"
+}
+```
+
+**Response 201:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer",
+  "user": {
+    "id": "usr_abc123def456",
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "created_at": "2026-08-26T11:00:00",
+    "updated_at": "2026-08-26T11:00:00"
+  }
+}
+```
+
+**Validation Rules:**
+- Email must be unique across all users
+- Password minimum 6 characters, strength-validated
+- `confirm_password` must match `password` if provided
+
+**Error Responses:** 400 (email taken), 400 (password mismatch), 400 (weak password)
+
+---
+
+#### POST /auth/login
+
+Authenticates credentials and returns a bearer token.
+
+**Request Body:**
+```json
+{ "email": "jane@example.com", "password": "SecurePass123!" }
+```
+
+**Response 200:** Same structure as /auth/register
+
+**Error Responses:** 401 (invalid email or password)
+
+---
+
+#### GET /auth/me [Protected]
+
+Returns the authenticated user's profile.
+
+**Response 200:**
+```json
+{
+  "id": "usr_abc123def456",
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "created_at": "2026-08-26T11:00:00",
+  "updated_at": "2026-08-26T11:00:00"
+}
+```
+
+---
+
+#### POST /auth/forgot-password
+
+Generates a password reset token. Prevents account enumeration by returning the same message regardless of whether the email exists.
+
+**Request Body:** `{ "email": "jane@example.com" }`
+
+**Response 200:**
+```json
+{
+  "message": "If an account exists with this email, password reset instructions have been generated.",
+  "reset_token": "rst_abcdef1234567890"
+}
+```
+
+---
+
+#### POST /auth/reset-password
+
+Resets user password using a valid reset token.
+
+**Request Body:**
+```json
+{
+  "email": "jane@example.com",
+  "reset_token": "rst_abcdef1234567890",
+  "new_password": "NewSecurePass456!"
+}
+```
+
+**Response 200:** `{ "status": "SUCCESS", "message": "Password reset successfully. You can now log in with your new password." }`
+
+---
+
+### 8.2 Dynamic Feature Schema
+
+#### GET /model/schema
+
+Returns the complete declarative input schema for the ML prediction form. The frontend uses this to dynamically render form controls without any hardcoded field definitions.
+
+**Response 200:**
+```json
+{
+  "model_name": "RestockAI XGBoost & Elasticity Demand Regressor",
+  "description": "Dynamic retail demand and replenishment forecasting model...",
+  "features": [
+    {
+      "name": "store_id",
+      "label": "Store Location",
+      "type": "select",
+      "required": true,
+      "default": "STR_001",
+      "description": "Retail store branch where demand will be forecasted.",
+      "options": [
+        { "value": "STR_001", "label": "Downtown Flagship (STR_001 - North)" },
+        { "value": "STR_002", "label": "Suburban Center (STR_002 - East)" }
+      ]
+    },
+    {
+      "name": "stock_on_hand",
+      "label": "Current Stock on Hand",
+      "type": "slider",
+      "required": true,
+      "default": 45,
+      "min": 0,
+      "max": 500,
+      "step": 1
+    }
+  ]
+}
+```
+
+**Supported field type values:** `text`, `number`, `select`, `slider`, `radio`
+
+---
+
+### 8.3 Prediction Endpoints [All Protected]
+
+#### POST /predictions
+
+Runs ML inference on the provided input features and stores the result under the authenticated user.
+
+**Request Body:**
+```json
+{
+  "input_data": {
+    "store_id": "STR_001",
+    "category": "Groceries",
+    "item_name": "Premium Organic Whole Milk 1 Gal",
+    "price": 4.99,
+    "unit_cost": 2.85,
+    "stock_on_hand": 45,
+    "daily_sales_avg": 14.5,
+    "lead_time_days": 3,
+    "discount_pct": 10,
+    "season": "Weekend_Peak",
+    "horizon_days": "7"
+  }
+}
+```
+
+**Response 201:**
+```json
+{
+  "id": "pred_abc123def456",
+  "user_id": "usr_abc123def456",
+  "input_data": { "...": "..." },
+  "prediction": 121.4,
+  "confidence": 92.2,
+  "lower_bound": 98.7,
+  "upper_bound": 144.1,
+  "metrics": {
+    "horizon_days": 7,
+    "predicted_daily_rate": 17.3,
+    "recommended_reorder_qty": 96,
+    "safety_stock": 21,
+    "reorder_point": 73,
+    "stockout_risk_days": 2.6,
+    "urgency": "MODERATE",
+    "estimated_reorder_cost": 273.60,
+    "estimated_revenue": 544.86,
+    "estimated_profit": 197.55,
+    "model_architecture": "XGBoost Time-Series Regressor + Elasticity Engine",
+    "insights": [
+      "Demand forecast over 7 days is 121.4 units (avg 17.3 units/day).",
+      "Current inventory (45 units) provides approximately 2.6 days of coverage.",
+      "Buffer safety stock is calculated at 21 units considering a 3-day supplier lead time.",
+      "Applied 10% promotion which provides an estimated 14.9% sales volume lift.",
+      "Factor 'Weekend_Peak' adjusted baseline velocity by +25.0%."
+    ]
+  },
+  "created_at": "2026-08-26T11:45:00"
+}
+```
+
+---
+
+#### POST /predictions/batch
+
+Processes multiple input rows in a single request (e.g., from an uploaded CSV file).
+
+**Request Body:**
+```json
+{
+  "items": [
+    { "store_id": "STR_001", "category": "Groceries", "price": 4.99, "..." : "..." },
+    { "store_id": "STR_002", "category": "Beverages", "price": 2.49, "..." : "..." }
+  ]
+}
+```
+
+**Response 201:**
+```json
+{ "total_processed": 2, "predictions": [ "..." ] }
+```
+
+Malformed rows within a batch are silently skipped with a warning log rather than failing the entire request.
+
+---
+
+#### GET /predictions
+
+Returns paginated prediction history for the authenticated user only.
+
+**Query Parameters:**
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `page` | integer | 1 | Page number (minimum 1) |
+| `page_size` | integer | 20 | Records per page (1-100) |
+| `search` | string | null | Full-text search on input_data JSON |
+| `category` | string | null | Filter by product category |
+
+**Response 200:**
+```json
+{ "total": 47, "page": 1, "page_size": 20, "predictions": [ "..." ] }
+```
+
+---
+
+#### GET /predictions/{prediction_id} [Protected]
+
+Retrieves a specific prediction with full metrics re-computed from stored inputs. Returns 404 if the prediction belongs to a different user (ownership strictly enforced).
+
+---
+
+#### DELETE /predictions/{prediction_id} [Protected]
+
+Permanently deletes a prediction record owned by the authenticated user.
+
+**Response 200:** `{ "status": "SUCCESS", "message": "Prediction pred_abc123 deleted successfully." }`
+
+---
+
+### 8.4 User Data — Saved Datasets [All Protected]
+
+#### POST /user-data
+
+Saves a named input feature dataset for future reuse.
+
+**Request Body:**
+```json
+{
+  "title": "Q4 Holiday Milk Forecast",
+  "input_data": { "store_id": "STR_001", "category": "Groceries", "..." : "..." }
+}
+```
+
+**Response 201:** Returns the full `UserDataResponse` object with generated `id`.
+
+---
+
+#### GET /user-data
+
+Lists all saved datasets for the authenticated user, ordered by newest first.
+
+---
+
+#### DELETE /user-data/{user_data_id} [Protected]
+
+Deletes a saved dataset owned by the authenticated user.
+
+---
+
+### 8.5 Retail Reorder and System Endpoints
+
+#### GET /health
+
+Health check endpoint. Validates database connectivity and returns aggregate record counts.
+
+**Response 200:**
+```json
+{
+  "status": "healthy",
+  "database_connected": true,
+  "total_stores": 5,
+  "total_items": 20,
+  "total_forecasts": 200,
+  "total_users": 3,
+  "total_predictions": 47,
+  "timestamp": "2026-08-26T11:00:00",
+  "version": "2.0.0"
+}
+```
+
+---
+
+#### GET /stores
+
+Returns the list of all retail stores.
+
+**Response 200:**
+```json
+[
+  { "store_id": "STR_001", "name": "Downtown Flagship", "region": "North" },
+  { "store_id": "STR_002", "name": "Suburban Center", "region": "East" }
+]
+```
+
+---
+
+#### GET /recommendations/{store_id}
+
+Computes real-time inventory recommendations for all items at a given store. This is the core retail intelligence endpoint.
+
+**Query Parameters:**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `category` | string | Filter by category (ALL or specific name) |
+| `urgency_filter` | string | Filter by urgency (ALL, CRITICAL, MODERATE, or HEALTHY) |
+
+**Processing Logic per Item:**
+1. Fetch latest `stock_on_hand` from `sales_daily` (latest date per item)
+2. Read 7-day and 30-day forecasts from `forecasts` table
+3. Calculate `stockout_risk_days`, `safety_stock`, `recommended_reorder`
+4. Classify urgency tier (CRITICAL / MODERATE / HEALTHY)
+5. Call `LLMExplainer.generate_explanation()` for rationale sentence
+6. Sort by urgency priority then descending recommended_reorder_qty
+
+**Response 200:** `RecommendationSummaryResponse` including store metadata, aggregate totals (total items, critical restocks count, total reorder units, estimated investment), and per-item `RecommendationItemResponse` array.
+
+---
+
+#### GET /recommendations/{store_id}/{item_id}
+
+Detailed recommendation for a single item at a given store. Same logic as the store endpoint but scoped to one item.
+
+---
+
+#### POST /export/sheets/{store_id}
+
+Exports all store recommendations to Google Sheets or a local CSV fallback.
+
+**Optional Request Body:**
+```json
+{ "spreadsheet_title": "RestockAI Export - STR_001 - 2026-08-26" }
+```
+
+**Response 200:**
+```json
+{
+  "status": "SUCCESS_SHEETS",
+  "message": "Exported 20 rows to Google Sheets.",
+  "store_id": "STR_001",
+  "rows_exported": 20,
+  "spreadsheet_url": "https://docs.google.com/spreadsheets/d/..."
+}
+```
+
+---
+
+#### POST /forecast/train
+
+Triggers on-demand ML model training and forecast regeneration for all store-item pairs.
+
+**Query Parameter:** `max_pairs` (integer, default 100) — limits pairs for faster testing runs.
+
+**Response 200:**
+```json
+{
+  "status": "SUCCESS",
+  "details": {
+    "total_pairs": 100,
+    "forecasts_generated": 200,
+    "models_used": { "Prophet": 60, "XGBoost": 40 },
+    "status": "SUCCESS"
+  }
+}
+```
+
+---
+
+## 9. Data Pipeline — ETL
+
+### ETL Flow
+
+```
+data/raw/stores.csv  --> SchemaValidator.validate_stores()  --> _load_stores()
+data/raw/items.csv   --> SchemaValidator.validate_items()   --> _load_items()
+data/raw/sales*.csv  --> SchemaValidator.validate_sales_daily() --> _load_sales_chunk()
+                              |                                       |
+                          bad_rows ---------------------------------> quarantine/
+```
+
+### Running the ETL Pipeline
 
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/RestockAI.git
-cd RestockAI
-
-# Create virtual environment
-python -m venv venv
-
-# Windows
-.\venv\Scripts\activate
-
-# Linux/macOS
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure environment variables
-cp .env.example .env
-
-# Run FastAPI server
-python -m uvicorn src.api.main:app --reload --port 8000
+python -m src.data_pipeline.etl
 ```
 
-### 3. Frontend Setup
+Or programmatically:
+```python
+from src.data_pipeline.etl import ETLPipeline
+pipeline = ETLPipeline(raw_dir="data/raw", quarantine_dir="data/quarantine")
+stats = pipeline.run(max_sales_rows=500000)
+```
+
+### CSV Input Formats
+
+**stores.csv** — Required columns:
+
+| Column | Type | Example |
+|---|---|---|
+| `store_id` | string | STR_001 |
+| `name` | string | Downtown Flagship |
+| `region` | string | North |
+
+**items.csv** — Required columns:
+
+| Column | Type | Example |
+|---|---|---|
+| `item_id` | string | ITM_0001 |
+| `name` | string | Organic Green Tea 500ml |
+| `category` | string | Beverages |
+| `unit_cost` | float | 3.50 |
+
+**sales_YYYYMMDD.csv** — Required columns:
+
+| Column | Type | Validation Rule |
+|---|---|---|
+| `store_id` | string | Non-empty |
+| `item_id` | string | Non-empty |
+| `date` | date (YYYY-MM-DD) | Valid ISO date |
+| `units_sold` | integer | >= 0 |
+| `stock_on_hand` | integer | >= 0 |
+| `price` | float | > 0 |
+
+### Processing Details
+
+- **Chunk size**: 50,000 rows per chunk for large sales files
+- **Upsert strategy**: `INSERT OR REPLACE` on SQLite; `INSERT ... ON CONFLICT DO UPDATE` on PostgreSQL
+- **Quarantine**: All invalid rows are appended to `data/quarantine/quarantine_<filename>.csv`
+- **Logging**: Execution stats and duration written to the `system_logs` table after each run
+
+### Generating Synthetic Data for Development
+
+```bash
+python -m src.data_pipeline.generate_synthetic_data
+```
+
+Creates 5 stores, 20 items, and 90 days of realistic sales history with weekday/weekend variation, seasonal multipliers, and price elasticity simulation.
+
+---
+
+## 10. LLM Explainer — Claude Integration
+
+### Architecture
+
+```python
+LLMExplainer.generate_explanation(
+    item_name, category, current_stock,
+    predicted_demand_7d, recommended_reorder,
+    stockout_days, model_used, unit_cost
+)
+
+# Tier 1: Check MD5-keyed in-memory cache
+if cache_hit:
+    return cached_explanation
+
+# Tier 2: Live Anthropic API call (if API key configured)
+if self.client:
+    response = anthropic.messages.create(
+        model="claude-3-5-sonnet-20241022",
+        max_tokens=100,
+        temperature=0.3,
+        messages=[{"role": "user", "content": prompt}]
+    )
+    cache and return explanation
+
+# Tier 3: Heuristic rule-based fallback (no API dependency)
+return heuristic_explanation(...)
+```
+
+### Prompt Engineering
+
+The prompt provides structured inventory telemetry and instructs Claude to produce a single punchy, store-manager-directed rationale:
+
+```
+You are RestockAI, an expert retail inventory advisor for a store manager.
+Item: {item_name} ({category})
+Current Stock on Hand: {current_stock} units
+Predicted 7-Day Demand: {predicted_demand_7d:.1f} units
+Recommended Reorder Quantity: {recommended_reorder} units
+Estimated Days until Stockout: {stockout_days:.1f} days
+Forecasting Model: {model_used}
+
+Write a single concise, punchy sentence explaining exactly why the store manager 
+should make this restock decision. Highlight the urgency, demand change, and 
+stockout timeline. No markdown fluff or introductory phrases.
+```
+
+### Heuristic Fallback Tiers
+
+| Condition | Explanation Template |
+|---|---|
+| stockout_days <= 1.5 | Urgent reorder of {n} units required — current stock ({s} units) will exhaust in {d} days at current demand velocity of {v} units/day. |
+| stockout_days <= 3.5 | Reorder {n} units to prevent weekend stockout — 7-day projected demand is {p} units with only {d} days of inventory remaining. |
+| recommended_reorder > 0 | Recommend restocking {n} units to maintain 7-day safety buffer against {category} demand fluctuations. |
+| recommended_reorder = 0 | Stock levels are optimal ({s} units on hand covering {d} days of demand) — no reorder needed. |
+
+### Cache Key Construction
+
+```python
+raw = f"{item_name}_{current_stock}_{round(demand, 1)}_{reorder}_{round(stockout, 1)}"
+cache_key = MD5(raw.encode("utf-8")).hexdigest()
+```
+
+This ensures identical item scenarios reuse cached explanations without re-calling the API.
+
+---
+
+## 11. Frontend — React SPA
+
+### Technology Details
+
+- **React 19** with functional components and hooks only
+- **Vite 8** build tool with API proxy configured to forward `/api` to `http://localhost:8000`
+- **lucide-react** for consistent iconography
+- **clsx + tailwind-merge** for conditional and merged class names
+- **AuthContext** for global JWT state management
+- **No external router library** — page navigation is managed via App.jsx state pattern
+
+### Pages Inventory
+
+| Page | File | Auth Required | Description |
+|---|---|---|---|
+| Landing | LandingPage.jsx | No | Marketing page with hero, features, and demo sections |
+| Login | Login.jsx | No | Email and password login form |
+| Register | Register.jsx | No | New account registration with validation |
+| Forgot Password | ForgotPassword.jsx | No | Password reset flow |
+| Dashboard | Dashboard.jsx | Yes | Main app hub with prediction statistics |
+| Add Data | AddData.jsx | Yes | Schema-driven dynamic ML input form |
+| Prediction Result | PredictionResult.jsx | Yes | Detailed view of a single prediction |
+| History | History.jsx | Yes | Paginated and searchable prediction history |
+| Store Intelligence | StoreIntelligence.jsx | Yes | Retail store restock recommendation explorer |
+| Saved Datasets | UserDataList.jsx | Yes | Manage and reuse saved input datasets |
+| Profile | Profile.jsx | Yes | User profile and account information |
+
+### API Service (services/api.js)
+
+All API calls are centralized in a single fetch wrapper. The base URL points to the Vite proxy at `/api/v1`. The JWT token is automatically injected from `localStorage` on every authenticated request.
+
+### AuthContext (context/AuthContext.jsx)
+
+Provides global authentication state to all components:
+
+```jsx
+const AuthContext = createContext();
+
+// Available via useContext(AuthContext):
+// - user: { id, name, email } | null
+// - token: string | null
+// - login(userData, token): void
+// - logout(): void
+```
+
+### Vite Proxy Configuration (vite.config.js)
+
+```javascript
+server: {
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8000',
+      changeOrigin: true
+    }
+  }
+}
+```
+
+This allows the frontend dev server to forward all `/api/*` requests to the FastAPI backend, avoiding CORS issues in development.
+
+---
+
+## 12. Authentication and Security
+
+### JWT Token Flow
+
+```
+1. User calls POST /auth/register or POST /auth/login
+2. Backend verifies credentials against DB
+3. create_access_token({"sub": user.id, "email": user.email})
+   - Algorithm: HS256
+   - Expiry: ACCESS_TOKEN_EXPIRE_MINUTES (default 1440 = 24 hours)
+4. Response: { access_token, token_type: "bearer", user }
+5. Client stores token in localStorage
+6. All subsequent requests: Authorization: Bearer <token>
+7. get_current_user() FastAPI dependency:
+   - Decodes JWT -> extracts user.id -> queries DB -> returns User object
+```
+
+### Password Security
+
+```python
+# Registration: hash with bcrypt (cost factor default ~12)
+hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+user.password_hash = hashed
+
+# Login: constant-time comparison
+is_valid = bcrypt.checkpw(plain_password.encode(), stored_hash)
+```
+
+### User Data Isolation
+
+Every database query on `predictions` and `user_data` is filtered by `user_id = current_user.id`. Accessing another user's record ID returns `404 Not Found` — never `403 Forbidden` — to prevent information disclosure about record existence.
+
+### Account Enumeration Prevention
+
+`POST /auth/forgot-password` always returns identical messaging whether or not the email address is registered, preventing attackers from probing for valid accounts.
+
+### CORS Policy
+
+Allowed origins are configured via `CORS_ORIGINS` environment variable:
+```
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173
+```
+
+---
+
+## 13. Configuration and Environment
+
+All configuration is managed via `pydantic-settings` reading from `.env`. Copy `.env.example` to `.env` and populate the required values.
+
+### Complete Environment Variables Reference
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `ENVIRONMENT` | No | development | Runtime environment: development or production |
+| `LOG_LEVEL` | No | INFO | Python logging level |
+| `DATABASE_URL` | Yes | sqlite:///data/restockai.db | SQLAlchemy database connection string |
+| `ANTHROPIC_API_KEY` | No | empty | Anthropic Claude API key — enables live LLM explanations |
+| `LLM_MODEL` | No | claude-3-5-sonnet-20241022 | Anthropic model identifier |
+| `LLM_CACHE_ENABLED` | No | true | Enable in-memory LLM response cache |
+| `GOOGLE_SHEETS_CREDENTIALS_FILE` | No | credentials.json | Path to Google service account JSON file |
+| `JWT_SECRET_KEY` | Yes | none | Random secret used for JWT HS256 signing |
+| `JWT_ALGORITHM` | No | HS256 | JWT signing algorithm |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | No | 1440 | Token lifetime in minutes (default 24 hours) |
+| `CORS_ORIGINS` | No | http://localhost:5173,... | Comma-separated list of allowed CORS origins |
+| `API_PORT` | No | 8000 | FastAPI server port |
+| `FRONTEND_PORT` | No | 5173 | Vite dev server port |
+
+### Database URL Examples
+
+```bash
+# SQLite for local development (zero setup required)
+DATABASE_URL=sqlite:///data/restockai.db
+
+# PostgreSQL for production
+DATABASE_URL=postgresql://restock_user:restock_password@localhost:5432/restockai
+
+# PostgreSQL via Docker internal network
+DATABASE_URL=postgresql://restock_user:restock_password@postgres:5432/restockai
+```
+
+---
+
+## 14. Docker and Deployment
+
+### Docker Services
+
+Three services defined in `docker-compose.yml`:
+
+| Service | Container Name | Port | Description |
+|---|---|---|---|
+| `postgres` | restockai-postgres | 5432 | PostgreSQL 16 Alpine database |
+| `api` | restockai-api | 8000 | FastAPI application server |
+| `ml-scheduler` | restockai-ml-scheduler | none | Background ML retrain daemon |
+
+### Docker Compose Usage
+
+```bash
+# Start all services in detached mode
+docker-compose up -d
+
+# Rebuild containers after code changes
+docker-compose up --build -d
+
+# View live logs
+docker-compose logs -f api
+docker-compose logs -f ml-scheduler
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (WARNING: wipes the database)
+docker-compose down -v
+```
+
+### PostgreSQL Health Check
+
+The `api` and `ml-scheduler` services depend on the `postgres` service passing a health check before starting:
+```yaml
+healthcheck:
+  test: ["CMD-SHELL", "pg_isready -U restock_user -d restockai"]
+  interval: 5s
+  timeout: 5s
+  retries: 5
+```
+
+### Vercel Frontend Deployment
+
+The frontend includes `vercel.json` for Vercel hosting:
+```bash
+cd frontend
+npm run build
+vercel --prod
+```
+
+### Environment Variables for Docker
+
+Pass the Anthropic API key at startup:
+```bash
+ANTHROPIC_API_KEY=your_key_here docker-compose up -d
+```
+
+---
+
+## 15. Testing
+
+### Test Suite Overview
+
+| File | Test Count | Focus Area |
+|---|---|---|
+| `tests/test_api.py` | 5 | API endpoint integration (health, stores, recommendations, item detail, sheets export) |
+| `tests/test_etl.py` | varies | ETL pipeline unit tests (validation, ingestion, quarantine behavior) |
+| `tests/test_ml_forecasting.py` | varies | ML model unit tests (Prophet fit/predict, XGBoost fit/predict, evaluator) |
+| `tests/test_multi_user_prediction.py` | varies | Multi-user data isolation and cross-user access prevention |
+
+### Running Tests
+
+```bash
+# Run all tests with verbose output
+pytest tests/ -v
+
+# Run a specific test file
+pytest tests/test_api.py -v
+
+# Run tests matching a keyword pattern
+pytest tests/ -k "recommendation or health" -v
+
+# Run with coverage report
+pytest tests/ --cov=src --cov-report=html
+open htmlcov/index.html
+
+# Run with short traceback format
+pytest tests/ --tb=short
+```
+
+### Test Architecture
+
+Tests use FastAPI's `TestClient` backed by a fresh SQLite in-memory database. A `@pytest.fixture(autouse=True)` fixture initializes standardized test data before each test:
+
+```python
+@pytest.fixture(autouse=True)
+def setup_api_test_data():
+    init_db()
+    with get_db_session() as session:
+        session.add(Store(store_id="STR_001", name="Downtown Metro", region="Midwest"))
+        session.add(Item(item_id="ITM_0001", name="Organic Green Tea", 
+                         category="Beverages", unit_cost=3.50))
+        session.add(SalesDaily(
+            store_id="STR_001", item_id="ITM_0001", date=date.today(),
+            units_sold=25, stock_on_hand=15, price=5.99
+        ))
+        session.add(Forecast(
+            forecast_id="FCST_001_7D", store_id="STR_001", item_id="ITM_0001",
+            forecast_date=date.today(), horizon_days=7, predicted_demand=180.0,
+            lower_bound=150.0, upper_bound=210.0, model_used="XGBoost"
+        ))
+    yield
+```
+
+---
+
+## 16. Development Setup
+
+### Prerequisites
+
+- Python 3.11 or higher
+- Node.js 18 or higher with npm
+- Git
+
+### Backend Setup
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/your-org/RestockAI.git
+cd RestockAI
+
+# 2. Create and activate a virtual environment
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# macOS / Linux
+source .venv/bin/activate
+
+# 3. Install all Python dependencies
+pip install -r requirements.txt
+
+# 4. Configure environment variables
+copy .env.example .env       # Windows
+cp .env.example .env          # macOS / Linux
+
+# Edit .env: set JWT_SECRET_KEY to a long random string at minimum
+
+# 5. Generate synthetic development data (optional but recommended)
+python -m src.data_pipeline.generate_synthetic_data
+
+# 6. Run the ETL pipeline to populate the database
+python -m src.data_pipeline.etl
+
+# 7. Train ML models and generate all forecasts
+python -m src.ml_engine.forecast_pipeline
+
+# 8. Start the FastAPI development server with auto-reload
+uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Frontend Setup
 
 ```bash
 cd frontend
+
+# Install npm dependencies
 npm install
+
+# Start the Vite development server with HMR
 npm run dev
+# Application available at http://localhost:5173
+
+# Build production bundle
+npm run build
+
+# Preview the production build locally
+npm run preview
+
+# Run the linter (oxlint)
+npm run lint
 ```
 
-The frontend will start at:
-```text
-http://localhost:5173
-```
-
-API requests are proxied automatically to:
-```text
-http://localhost:8000/api/v1
-```
-
----
-
-## 🧪 Testing Instructions
-
-Run the complete test suite covering authentication, token authorization, dynamic ML inference, and multi-user data isolation:
+### Verify Your Setup
 
 ```bash
-# Run all tests
-pytest -v tests/
+# Test API health endpoint
+curl http://localhost:8000/api/v1/health
 
-# Run multi-user prediction & isolation tests
-pytest -v tests/test_multi_user_prediction.py
+# Interactive API documentation (Swagger UI)
+# Open: http://localhost:8000/docs
+
+# Alternative API documentation (ReDoc)
+# Open: http://localhost:8000/redoc
+```
+
+### Development Workflow Tips
+
+- **Backend changes**: Uvicorn auto-reloads when `--reload` flag is active
+- **Frontend changes**: Vite HMR (Hot Module Replacement) updates in the browser instantly
+- **Database schema changes**: Modify `models.py` and call `init_db()` which auto-creates new tables
+- **New ML models**: Add the model class in `ml_engine/`, register it in `evaluator.py`
+- **New API endpoints**: Add to `routes.py`, add request/response types to `schemas.py`
+- **New features**: Follow the pattern — schema in `schemas.py`, logic in a service module, endpoint in `routes.py`
+
+---
+
+## 17. API Schemas Reference
+
+All request and response types are Pydantic v2 models defined in `src/api/schemas.py`.
+
+### Authentication Schemas
+
+```python
+class UserRegister(BaseModel):
+    name: str                            # min_length=2, max_length=100
+    email: EmailStr
+    password: str                        # min_length=6
+    confirm_password: Optional[str]
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserResponse(BaseModel):
+    id: str
+    name: str
+    email: str
+    created_at: Optional[str]
+    updated_at: Optional[str]
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ForgotPasswordResponse(BaseModel):
+    message: str
+    reset_token: Optional[str]
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    reset_token: str
+    new_password: str                    # min_length=6
+```
+
+### Dynamic Schema Schemas
+
+```python
+class FeatureSchemaOption(BaseModel):
+    value: Union[str, int, float]
+    label: str
+
+class FeatureSchemaField(BaseModel):
+    name: str
+    label: str
+    type: str                            # text, number, select, slider, radio
+    required: bool = True
+    default: Optional[Union[str, int, float, bool]]
+    placeholder: Optional[str]
+    description: Optional[str]
+    min: Optional[float]
+    max: Optional[float]
+    step: Optional[float]
+    options: Optional[List[FeatureSchemaOption]]
+
+class FeatureSchemaResponse(BaseModel):
+    model_name: str
+    description: str
+    features: List[FeatureSchemaField]
+```
+
+### Prediction Schemas
+
+```python
+class PredictionCreate(BaseModel):
+    input_data: Dict[str, Any]           # Feature key-value pairs
+
+class BatchPredictionCreate(BaseModel):
+    items: List[Dict[str, Any]]          # List of feature objects
+
+class PredictionResponse(BaseModel):
+    id: str
+    user_id: str
+    input_data: Dict[str, Any]
+    prediction: float                    # Total demand units forecast
+    confidence: float                    # Model confidence percentage
+    lower_bound: Optional[float]         # 90% CI lower bound
+    upper_bound: Optional[float]         # 90% CI upper bound
+    metrics: Optional[Dict[str, Any]]    # Extended decision metrics
+    created_at: Optional[str]
+
+class BatchPredictionResponse(BaseModel):
+    total_processed: int
+    predictions: List[PredictionResponse]
+
+class PredictionListResponse(BaseModel):
+    total: int
+    page: int
+    page_size: int
+    predictions: List[PredictionResponse]
+```
+
+### User Data Schemas
+
+```python
+class UserDataCreate(BaseModel):
+    title: Optional[str] = "Untitled Dataset"
+    input_data: Dict[str, Any]
+
+class UserDataResponse(BaseModel):
+    id: str
+    user_id: str
+    title: Optional[str]
+    input_data: Dict[str, Any]
+    created_at: Optional[str]
+    updated_at: Optional[str]
+```
+
+### Retail and Inventory Schemas
+
+```python
+class HealthCheckResponse(BaseModel):
+    status: str = "ok"
+    database_connected: bool = True
+    total_stores: int = 0
+    total_items: int = 0
+    total_forecasts: int = 0
+    total_users: int = 0
+    total_predictions: int = 0
+    timestamp: datetime
+    version: str = "2.0.0"
+
+class StoreResponse(BaseModel):
+    store_id: str
+    name: str
+    region: str
+
+class RecommendationItemResponse(BaseModel):
+    item_id: str
+    name: str
+    category: str
+    unit_cost: float
+    current_price: float
+    stock_on_hand: int
+    predicted_demand_7d: float
+    predicted_demand_30d: float
+    recommended_reorder_qty: int
+    stockout_risk_days: float
+    urgency: str                         # CRITICAL, MODERATE, or HEALTHY
+    model_used: str
+    explanation: str                     # Claude LLM or heuristic rationale
+    lower_bound_7d: float
+    upper_bound_7d: float
+
+class RecommendationSummaryResponse(BaseModel):
+    store_id: str
+    store_name: str
+    region: str
+    total_items: int
+    critical_restocks_count: int
+    total_recommended_reorder_units: int
+    estimated_reorder_investment: float
+    recommendations: List[RecommendationItemResponse]
+
+class SheetsExportRequest(BaseModel):
+    spreadsheet_title: Optional[str]
+    sheet_name: Optional[str]
+
+class SheetsExportResponse(BaseModel):
+    status: str
+    message: str
+    store_id: str
+    rows_exported: int
+    spreadsheet_url: Optional[str]
 ```
 
 ---
 
-## 🔌 API Endpoints Summary
+## 18. Data Flow Diagrams
 
-| Method   | Endpoint                             | Description                         | Auth Required |
-| :------- | :----------------------------------- | :---------------------------------- | :-----------: |
-| `POST`   | `/api/v1/auth/register`              | Register new user account           |       No      |
-| `POST`   | `/api/v1/auth/login`                 | Authenticate & issue JWT            |       No      |
-| `GET`    | `/api/v1/auth/me`                    | Fetch authenticated profile         |      Yes      |
-| `POST`   | `/api/v1/auth/forgot-password`       | Request password reset token        |       No      |
-| `POST`   | `/api/v1/auth/reset-password`        | Reset password with valid token     |       No      |
-| `GET`    | `/api/v1/model/schema`               | Fetch dynamic ML feature schema     |       No      |
-| `POST`   | `/api/v1/predictions`                | Execute ML prediction for user      |      Yes      |
-| `GET`    | `/api/v1/predictions`                | List authenticated user predictions |      Yes      |
-| `GET`    | `/api/v1/predictions/{id}`           | Inspect specific prediction details |      Yes      |
-| `DELETE` | `/api/v1/predictions/{id}`           | Delete user's prediction            |      Yes      |
-| `POST`   | `/api/v1/user-data`                  | Save input feature dataset          |      Yes      |
-| `GET`    | `/api/v1/user-data`                  | List saved datasets                 |      Yes      |
-| `DELETE` | `/api/v1/user-data/{id}`             | Delete saved dataset                |      Yes      |
-| `GET`    | `/api/v1/health`                     | System health check                 |       No      |
-| `GET`    | `/api/v1/stores`                     | List monitored stores               |       No      |
-| `GET`    | `/api/v1/recommendations/{store_id}` | Store replenishment recommendations |       No      |
+### Single Prediction Flow
+
+```
+User fills Add Data form (AddData.jsx)
+          |
+          v
+POST /api/v1/predictions
+  { input_data: { store_id, category, price, stock_on_hand, ... } }
+          |
+          v
+PredictionService.preprocess_and_predict(input_data)
+  1. Parse and validate all inputs with safe fallbacks
+  2. Lookup category elasticity and volatility profile
+  3. Apply seasonal multiplier for the selected season
+  4. Calculate promotional lift if discount_pct > 0
+  5. Compute adjusted_daily_rate with price-margin correction
+  6. Forecast total demand = adjusted_daily_rate x horizon_days
+  7. Compute 90% confidence interval (z=1.645 x std_error)
+  8. Compute safety_stock, reorder_point, recommended_reorder
+  9. Classify urgency (CRITICAL / MODERATE / HEALTHY)
+  10. Compute financial estimates (cost, revenue, profit)
+  11. Generate 3-5 plain-English insight strings
+          |
+          v
+Save Prediction record to predictions table (user_id scoped)
+          |
+          v
+Return PredictionResponse with all metrics
+          |
+          v
+PredictionResult.jsx renders forecast, confidence, metrics, and insights
+```
+
+### Batch ML Forecast Flow
+
+```
+Cron trigger (daily) OR POST /api/v1/forecast/train
+          |
+          v
+ForecastPipeline.run(max_pairs=N)
+          |
+          +-- Query all stores x items -> generate pair list
+          +-- Load entire sales_daily into pandas DataFrame
+          |
+          `-- For each (store_id, item_id) pair:
+                |
+                +-- Slice historical data for this pair
+                +-- Require minimum 7 rows; skip if less
+                |
+                +-- ModelEvaluator.evaluate_and_select_best():
+                |     +-- Split: train (all except last 14 days)
+                |     +-- Split: test (last 14 days)
+                |     +-- Fit Prophet on train, predict test -> MAPE, RMSE
+                |     +-- Fit XGBoost on train, predict test -> MAPE, RMSE
+                |     `-- Select model with lower MAPE
+                |
+                +-- Refit winning model on FULL dataset
+                +-- predict(periods=30) -> 30 daily forecast rows
+                |
+                +-- Aggregate: sum(rows 1-7)  -> 7D forecast record
+                +-- Aggregate: sum(rows 1-30) -> 30D forecast record
+                |
+                `-- Upsert both records to forecasts table
+
+Log pipeline stats to system_logs table
+```
+
+### Store Recommendation Flow
+
+```
+GET /api/v1/recommendations/{store_id}?category=ALL&urgency_filter=ALL
+          |
+          v
+Query items table (filter by category if specified)
+Query forecasts table for store_id (all horizons)
+Query sales_daily: latest date per item for stock_on_hand
+          |
+          v
+For each item:
+  current_stock   = latest sales_daily.stock_on_hand
+  pred_7d         = forecasts[horizon=7].predicted_demand
+  pred_30d        = forecasts[horizon=30].predicted_demand
+  daily_run_rate  = max(1.0, pred_7d / 7.0)
+  stockout_days   = current_stock / daily_run_rate
+  safety_stock    = int(daily_run_rate x 2.5)
+  recommended_reorder = max(0, ceil(pred_7d + safety_stock - current_stock))
+  
+  if stockout_days <= 2.0 or current_stock < daily_run_rate x 1.5:
+      urgency = CRITICAL
+  elif stockout_days <= 4.5 or recommended_reorder > 0:
+      urgency = MODERATE
+  else:
+      urgency = HEALTHY
+      
+  Apply urgency_filter if specified
+  
+  LLMExplainer.generate_explanation(...) -> rationale sentence
+  
+  Accumulate: total_reorder_units, total_reorder_cost, critical_count
+          |
+          v
+Sort: CRITICAL first, then MODERATE, then HEALTHY
+Within same urgency: sort by descending recommended_reorder_qty
+          |
+          v
+Return RecommendationSummaryResponse:
+  {
+    store_id, store_name, region,
+    total_items, critical_restocks_count,
+    total_recommended_reorder_units,
+    estimated_reorder_investment,
+    recommendations: [ ... ]
+  }
+```
 
 ---
 
-## 🔒 Security Best Practices
+## Summary
 
-* **🔐 Salted Password Hashing:** Passwords hashed with bcrypt (12 rounds).
-* **👤 Strict Data Isolation:** Relational queries strictly filter by authenticated `user_id`.
-* **🎫 JWT Expiration & Verification:** Secure expiration policies with HS256 signature checks.
-* **🛡️ Zero Cross-Talk:** Models, history records, and custom datasets are inaccessible across accounts.
+RestockAI is a complete, production-oriented retail intelligence platform. The architecture is deliberately modular:
 
----
-
-## 🚀 Project Highlights
-
-* 🔐 Secure multi-user authentication
-* 👤 Strict user-level data isolation
-* 🎫 JWT-based authorization
-* 📈 XGBoost-based demand prediction
-* 🧠 Price elasticity modeling
-* 📊 Dynamic prediction feature schema
-* 📉 Statistical prediction intervals
-* 💾 Saved prediction scenarios
-* 🏬 Multi-store inventory optimization
-* 🤖 AI-powered replenishment reasoning
-* 📤 CSV and Google Sheets export
-* ⚡ FastAPI backend
-* ⚛️ React frontend
-* 🗄️ SQLAlchemy database layer
-* 🧪 Automated pytest test suite
+- The **ML engine** is decoupled from the API and can be run independently for batch training
+- The **prediction service** operates without any historical data pipeline — it runs purely on user-provided inputs
+- The **LLM explainer** degrades gracefully to heuristics without any API key
+- The **database** is portable — SQLite for development, PostgreSQL for production — with identical ORM code
+- The **frontend** is schema-driven — the ML feature schema endpoint drives form rendering dynamically
+- The **ETL pipeline** is idempotent — running it multiple times will upsert, not duplicate, records
 
 ---
 
-## 📌 Future Improvements
-
-* Advanced time-series forecasting models (Prophet / DeepAR)
-* Automated model retraining triggers
-* Real-time inventory synchronization via WebSockets
-* Advanced demand anomaly detection
-* Role-based access control (RBAC)
-* Containerized multi-cloud deployment (Docker & Kubernetes)
-* Automated email/SMS low-stock alert webhooks
-
----
-
-## 👨‍💻 Author
-
-**Suprit Totiger**
-
-Built as an end-to-end AI/ML and full-stack application demonstrating:
-**Machine Learning + Backend Development + Frontend Development + Database Design + Authentication + Inventory Optimization**
+*RestockAI v2.0.0 — Documentation generated 2026-08-26*

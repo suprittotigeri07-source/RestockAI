@@ -67,6 +67,13 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
     }
   };
 
+  const switchTab = (tab) => {
+    setAuthTab(tab);
+    setLoginError('');
+    setRegError('');
+    setAuthError(null);
+  };
+
   // Login Submit
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -109,6 +116,10 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
     }
     if (regPassword.length < 6) {
       setRegError('Password must be at least 6 characters long.');
+      return;
+    }
+    if (!/[0-9]/.test(regPassword) && !/[\W_]/.test(regPassword)) {
+      setRegError('Password must contain at least one digit or special character (e.g. 1, !, @).');
       return;
     }
     if (regPassword !== regConfirmPassword) {
@@ -578,22 +589,14 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                   <button
                     type="button"
                     className={`auth-tab-btn ${authTab === 'login' ? 'active' : 'inactive'}`}
-                    onClick={() => {
-                      setAuthTab('login');
-                      setLoginError('');
-                      setAuthError(null);
-                    }}
+                    onClick={() => switchTab('login')}
                   >
                     <Lock size={14} /> Sign In
                   </button>
                   <button
                     type="button"
                     className={`auth-tab-btn ${authTab === 'register' ? 'active' : 'inactive'}`}
-                    onClick={() => {
-                      setAuthTab('register');
-                      setRegError('');
-                      setAuthError(null);
-                    }}
+                    onClick={() => switchTab('register')}
                   >
                     <User size={14} /> Create Account
                   </button>
