@@ -49,9 +49,9 @@ class Item(Base):
 class SalesDaily(Base):
     __tablename__ = "sales_daily"
     
-    store_id = Column(String(64), ForeignKey("stores.store_id", ondelete="CASCADE"), primary_key=True)
-    item_id = Column(String(64), ForeignKey("items.item_id", ondelete="CASCADE"), primary_key=True)
-    date = Column(Date, primary_key=True)
+    store_id = Column(String(64), ForeignKey("stores.store_id", ondelete="CASCADE"), primary_key=True, index=True)
+    item_id = Column(String(64), ForeignKey("items.item_id", ondelete="CASCADE"), primary_key=True, index=True)
+    date = Column(Date, primary_key=True, index=True)
     units_sold = Column(Integer, nullable=False)
     stock_on_hand = Column(Integer, nullable=False)
     price = Column(Numeric(10, 2), nullable=False)
@@ -78,9 +78,9 @@ class Forecast(Base):
     __tablename__ = "forecasts"
     
     forecast_id = Column(String(64), primary_key=True)
-    store_id = Column(String(64), ForeignKey("stores.store_id", ondelete="CASCADE"), nullable=False)
-    item_id = Column(String(64), ForeignKey("items.item_id", ondelete="CASCADE"), nullable=False)
-    forecast_date = Column(Date, nullable=False)
+    store_id = Column(String(64), ForeignKey("stores.store_id", ondelete="CASCADE"), nullable=False, index=True)
+    item_id = Column(String(64), ForeignKey("items.item_id", ondelete="CASCADE"), nullable=False, index=True)
+    forecast_date = Column(Date, nullable=False, index=True)
     horizon_days = Column(Integer, nullable=False) # 7 or 30
     predicted_demand = Column(Numeric(10, 2), nullable=False)
     lower_bound = Column(Numeric(10, 2), nullable=False)

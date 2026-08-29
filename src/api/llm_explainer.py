@@ -17,13 +17,22 @@ class LLMExplainer:
         self.client = None
         self._memory_cache: Dict[str, str] = {}
         
-        if self.api_key and self.api_key.strip() != "":
+        # Only initialize client if valid Anthropic key is provided
+        is_valid_key = (
+            self.api_key 
+            and self.api_key.strip() != "" 
+            and not self.api_key.startswith("your_") 
+            and "placeholder" not in self.api_key.lower()
+            and self.api_key.startswith("sk-")
+        )
+        if is_valid_key:
             try:
                 import anthropic
                 self.client = anthropic.Anthropic(api_key=self.api_key)
                 logger.info("Anthropic Claude client initialized successfully.")
             except Exception as e:
                 logger.warning(f"Could not initialize Anthropic client: {e}")
+                self.client = None
                 
     def generate_explanation(
         self,
@@ -72,7 +81,8 @@ class LLMExplainer:
                 self._memory_cache[cache_key] = explanation
                 return explanation
             except Exception as e:
-                logger.warning(f"Anthropic API call failed ({e}), falling back to heuristic explanation.")
+                logger.warning(f"Anthropic API call failed ({e}), disabling client and falling back to fast heuristic.")
+                self.client = None
                 
         # Heuristic explanation generator (offline / fallback mode)
         explanation = self._heuristic_explanation(
