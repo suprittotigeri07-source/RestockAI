@@ -51,13 +51,20 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
+    // Timeout: 30s for normal requests, 120s for batch predictions
+    const timeoutMs = endpoint.includes('/batch') ? 120000 : 30000;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
     const config = {
       ...options,
-      headers
+      headers,
+      signal: controller.signal
     };
 
     try {
       const response = await fetch(url, config);
+      clearTimeout(timeoutId);
       
       // Handle 401 Unauthorized (expired / invalid token)
       if (response.status === 401 && !endpoint.includes('/auth/login')) {
@@ -74,6 +81,15 @@ class ApiClient {
 
       return data;
     } catch (error) {
+      clearTimeout(timeoutId);
+      if (error.name === 'AbortError') {
+        console.error(`API Timeout on [${options.method || 'GET'} ${endpoint}]: Request took longer than ${timeoutMs / 1000}s`);
+        throw new Error('Request timed out. Please check that the backend server is running and try again.');
+      }
+      if (error.message === 'Failed to fetch' || error.message?.includes('NetworkError')) {
+        console.error(`API Network Error on [${options.method || 'GET'} ${endpoint}]:`, error.message);
+        throw new Error('Cannot connect to the server. Please check that the backend is running.');
+      }
       console.error(`API Error on [${options.method || 'GET'} ${endpoint}]:`, error.message);
       throw error;
     }
