@@ -346,10 +346,23 @@ export default function AddData({ onNavigate, onPredictionCreated, initialPreset
     setErrorMessage('');
     try {
       const res = await api.predictions.createBatch(parsedRows);
-      setSuccessMessage(`Successfully generated predictions for all ${res.total_processed} items from device!`);
-      if (onNavigate) {
-        setTimeout(() => onNavigate('history'), 1500);
-      }
+      
+      // Map predictions back into the rows
+      const updatedRows = parsedRows.map((row, idx) => {
+        const matchingPred = res.predictions?.[idx];
+        if (matchingPred) {
+          return {
+            ...row,
+            prediction: matchingPred.prediction,
+            confidence: matchingPred.confidence,
+            urgency: matchingPred.metrics?.urgency || 'HEALTHY'
+          };
+        }
+        return row;
+      });
+      
+      setParsedRows(updatedRows);
+      setSuccessMessage(`Successfully generated predictions for all ${res.total_processed} items! View results inline below.`);
     } catch (err) {
       setErrorMessage(err.message || 'Batch prediction failed.');
     } finally {
@@ -635,44 +648,76 @@ export default function AddData({ onNavigate, onPredictionCreated, initialPreset
                       <th style={{ padding: '8px 12px' }}>Price</th>
                       <th style={{ padding: '8px 12px' }}>Stock</th>
                       <th style={{ padding: '8px 12px' }}>Daily Avg</th>
+                      <th style={{ padding: '8px 12px' }}>Prediction</th>
+                      <th style={{ padding: '8px 12px' }}>Confidence</th>
+                      <th style={{ padding: '8px 12px' }}>Urgency</th>
                       <th style={{ padding: '8px 12px', textAlign: 'right' }}>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {parsedRows.map((r, idx) => (
-                      <tr
-                        key={idx}
-                        style={{
-                          borderBottom: '1px solid #f1f5f9',
-                          background: selectedRowIndex === idx ? '#eff6ff' : 'transparent'
-                        }}
-                      >
-                        <td style={{ padding: '8px 12px', color: '#64748b' }}>{idx + 1}</td>
-                        <td style={{ padding: '8px 12px', fontWeight: 600, color: '#0f172a' }}>{r.item_name || 'SKU'}</td>
-                        <td style={{ padding: '8px 12px' }}>{r.category || 'Retail'}</td>
-                        <td style={{ padding: '8px 12px' }}>${r.price || 0}</td>
-                        <td style={{ padding: '8px 12px' }}>{r.stock_on_hand || 0}</td>
-                        <td style={{ padding: '8px 12px' }}>{r.daily_sales_avg || 0}</td>
-                        <td style={{ padding: '8px 12px', textAlign: 'right' }}>
-                          <button
-                            type="button"
-                            onClick={() => handleSelectRow(idx)}
-                            style={{
-                              padding: '4px 8px',
-                              background: selectedRowIndex === idx ? '#2563eb' : '#f1f5f9',
-                              border: '1px solid #cbd5e1',
-                              borderRadius: '4px',
-                              color: selectedRowIndex === idx ? '#ffffff' : '#334155',
-                              cursor: 'pointer',
-                              fontSize: '11px',
-                              fontWeight: 500
-                            }}
-                          >
-                            {selectedRowIndex === idx ? 'Editing in Form ✓' : 'Load into Form'}
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {parsedRows.map((r, idx) => {
+                      const urgencyColors = {
+                        CRITICAL: { bg: '#fef2f2', text: '#b91c1c' },
+                        MODERATE: { bg: '#fffbeb', text: '#b45309' },
+                        HEALTHY: { bg: '#f0fdf4', text: '#15803d' }
+                      };
+                      const uCol = r.urgency ? (urgencyColors[r.urgency] || urgencyColors.HEALTHY) : null;
+                      
+                      return (
+                        <tr
+                          key={idx}
+                          style={{
+                            borderBottom: '1px solid #f1f5f9',
+                            background: selectedRowIndex === idx ? '#eff6ff' : 'transparent'
+                          }}
+                        >
+                          <td style={{ padding: '8px 12px', color: '#64748b' }}>{idx + 1}</td>
+                          <td style={{ padding: '8px 12px', fontWeight: 600, color: '#0f172a' }}>{r.item_name || 'SKU'}</td>
+                          <td style={{ padding: '8px 12px' }}>{r.category || 'Retail'}</td>
+                          <td style={{ padding: '8px 12px' }}>${r.price || 0}</td>
+                          <td style={{ padding: '8px 12px' }}>{r.stock_on_hand || 0}</td>
+                          <td style={{ padding: '8px 12px' }}>{r.daily_sales_avg || 0}</td>
+                          <td style={{ padding: '8px 12px', fontWeight: 700, color: '#2563eb' }}>
+                            {r.prediction !== undefined ? `${r.prediction} units` : '—'}
+                          </td>
+                          <td style={{ padding: '8px 12px', fontWeight: 600, color: '#16a34a' }}>
+                            {r.confidence !== undefined ? `${r.confidence}%` : '—'}
+                          </td>
+                          <td style={{ padding: '8px 12px' }}>
+                            {r.urgency ? (
+                              <span style={{
+                                padding: '2px 8px',
+                                borderRadius: '4px',
+                                fontSize: '10px',
+                                fontWeight: 800,
+                                background: uCol.bg,
+                                color: uCol.text
+                              }}>
+                                {r.urgency}
+                              </span>
+                            ) : '—'}
+                          </td>
+                          <td style={{ padding: '8px 12px', textAlign: 'right' }}>
+                            <button
+                              type="button"
+                              onClick={() => handleSelectRow(idx)}
+                              style={{
+                                padding: '4px 8px',
+                                background: selectedRowIndex === idx ? '#2563eb' : '#f1f5f9',
+                                border: '1px solid #cbd5e1',
+                                borderRadius: '4px',
+                                color: selectedRowIndex === idx ? '#ffffff' : '#334155',
+                                cursor: 'pointer',
+                                fontSize: '11px',
+                                fontWeight: 500
+                              }}
+                            >
+                              {selectedRowIndex === idx ? 'Editing in Form ✓' : 'Load into Form'}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

@@ -310,6 +310,7 @@ def create_batch_predictions(
     and saves all predictions associated with the authenticated user.
     """
     created_predictions = []
+    now = datetime.utcnow()
     
     for item in payload.items:
         try:
@@ -323,7 +324,8 @@ def create_batch_predictions(
                 prediction=pred_result["prediction"],
                 confidence=pred_result["confidence"],
                 lower_bound=pred_result["lower_bound"],
-                upper_bound=pred_result["upper_bound"]
+                upper_bound=pred_result["upper_bound"],
+                created_at=now
             )
             db.add(record)
             created_predictions.append((record, item, pred_result))
@@ -335,7 +337,6 @@ def create_batch_predictions(
     
     results = []
     for record, raw_inp, res in created_predictions:
-        db.refresh(record)
         results.append(PredictionResponse(
             id=record.id,
             user_id=record.user_id,
