@@ -14,7 +14,7 @@
 
 | Resource | Link | Description |
 | :--- | :--- | :--- |
-| 🌐 **Live Application** | [restockai.vercel.app](https://restockai-4rc4.onrender.com) | Interactive React Web Application |
+| 🌐 **Live Application** | [restockai.vercel.app](https://restock-ai-six.vercel.app/) | Interactive React Web Application |
 > 💡 *Replace the placeholder URLs above with your actual deployed frontend and backend links.*
 
 ---
