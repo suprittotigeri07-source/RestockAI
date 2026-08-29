@@ -14,8 +14,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     
     # Database Settings
-    # Supports PostgreSQL or fallback to local SQLite for standalone offline development/testing
-    DATABASE_URL: str = Field(default=f"sqlite:///{BASE_DIR / 'data' / 'restockai.db'}")
+    DATABASE_URL: str = Field(default="postgresql://postgres:postgres@localhost:5432/restockai")
     
     # ML & Forecasting
     DEFAULT_FORECAST_HORIZON_SHORT: int = 7
@@ -26,6 +25,14 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440 # 24 hours
     CORS_ORIGINS: str = "*"
+
+    # Email / SMTP Settings
+    SMTP_HOST: str = Field(default="smtp.example.com")
+    SMTP_PORT: int = Field(default=587)
+    SMTP_USER: str = Field(default="")
+    SMTP_PASSWORD: str = Field(default="")
+    EMAIL_FROM: str = Field(default="noreply@restockai.io")
+    FRONTEND_URL: str = Field(default="http://localhost:5173")
 
     # LLM Settings
     ANTHROPIC_API_KEY: str = Field(default="")

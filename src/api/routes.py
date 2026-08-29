@@ -1,7 +1,7 @@
 import uuid
 import json
 import math
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import List, Optional, Dict, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
@@ -9,7 +9,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc, func
 
 from src.database.connection import get_db
-from src.database.models import Store, Item, SalesDaily, Forecast, SystemLog, User, UserData, Prediction
+from src.database.models import Store, Item, SalesDaily, Forecast, SystemLog, User, UserData, Prediction, PasswordResetToken
+from src.utils.config import settings
+from src.utils.email import send_password_reset_email
 from src.api.schemas import (
     HealthCheckResponse,
     StoreResponse,
@@ -145,19 +147,34 @@ def get_current_user_profile(current_user: User = Depends(get_current_user)):
 
 @router.post("/auth/forgot-password", response_model=ForgotPasswordResponse)
 def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
-    """Generates a password reset token for account recovery."""
+    """Generates a password reset token for account recovery and emails it."""
     user = db.query(User).filter(User.email == payload.email.lower().strip()).first()
     if not user:
         # Prevent account enumeration
         return ForgotPasswordResponse(
-            message="If an account exists with this email, password reset instructions have been generated.",
+            message="If an account exists for this email, a password reset link has been sent.",
             reset_token=None
         )
     
-    reset_token = f"rst_{uuid.uuid4().hex[:16]}"
+    # Generate token
+    raw_token = f"rst_{uuid.uuid4().hex}"
+    hashed_token = hash_password(raw_token)
+    
+    reset_record = PasswordResetToken(
+        id=f"prt_{uuid.uuid4().hex[:12]}",
+        user_id=user.id,
+        token_hash=hashed_token,
+        expires_at=datetime.utcnow() + timedelta(minutes=30)
+    )
+    db.add(reset_record)
+    db.commit()
+
+    reset_link = f"{settings.FRONTEND_URL}/reset-password?token={raw_token}&email={user.email}"
+    send_password_reset_email(user.email, reset_link)
+
     return ForgotPasswordResponse(
-        message="Password reset authorization token generated successfully.",
-        reset_token=reset_token
+        message="If an account exists for this email, a password reset link has been sent.",
+        reset_token=None
     )
 
 @router.post("/auth/reset-password")
@@ -165,7 +182,23 @@ def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db))
     """Resets user password given a valid reset token."""
     user = db.query(User).filter(User.email == payload.email.lower().strip()).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User account not found.")
+        raise HTTPException(status_code=400, detail="Invalid request.")
+
+    # Find a valid token
+    valid_token_record = None
+    tokens = db.query(PasswordResetToken).filter(
+        PasswordResetToken.user_id == user.id,
+        PasswordResetToken.used == False,
+        PasswordResetToken.expires_at > datetime.utcnow()
+    ).all()
+    
+    for record in tokens:
+        if verify_password(payload.reset_token, record.token_hash):
+            valid_token_record = record
+            break
+            
+    if not valid_token_record:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset token.")
 
     is_valid, err_msg = validate_password_strength(payload.new_password)
     if not is_valid:
@@ -173,6 +206,8 @@ def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db))
 
     user.password_hash = hash_password(payload.new_password)
     user.updated_at = datetime.utcnow()
+    valid_token_record.used = True
+    
     db.commit()
     return {"status": "SUCCESS", "message": "Password reset successfully. You can now log in with your new password."}
 

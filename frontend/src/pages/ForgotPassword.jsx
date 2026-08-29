@@ -11,6 +11,19 @@ export default function ForgotPassword({ onNavigate }) {
   const [statusMessage, setStatusMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    const emailParam = params.get('email');
+    if (token) {
+      setResetToken(token);
+      setStep(2);
+      if (emailParam) {
+        setEmail(emailParam);
+      }
+    }
+  }, []);
+
   const handleRequestToken = async (e) => {
     e.preventDefault();
     if (!email.trim()) {
@@ -58,6 +71,7 @@ export default function ForgotPassword({ onNavigate }) {
       }, 2000);
     } catch (err) {
       setErrorMessage(err.message);
+      setNewPassword('');
     } finally {
       setLoading(false);
     }

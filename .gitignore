@@ -33,6 +33,8 @@ data/exports/*.csv
 
 # Secrets & Local credentials
 .env
+.env.*
+!.env.example
 credentials.json
 service_account.json
 .DS_Store

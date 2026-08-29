@@ -8,17 +8,12 @@ from src.utils.config import settings
 from src.utils.logger import logger
 from src.database.models import Base
 
-# Ensure SQLite data directory exists if using local SQLite database
-if settings.DATABASE_URL.startswith("sqlite"):
-    db_path = settings.DATABASE_URL.replace("sqlite:///", "")
-    Path(db_path).parent.mkdir(parents=True, exist_ok=True)
-
 # Create engine
-connect_args = {"check_same_thread": False} if settings.DATABASE_URL.startswith("sqlite") else {}
 engine = create_engine(
     settings.DATABASE_URL,
-    connect_args=connect_args,
     pool_pre_ping=True,
+    pool_size=10,
+    max_overflow=20,
     echo=False
 )
 

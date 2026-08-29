@@ -49,6 +49,8 @@ export default function Register({ onNavigate }) {
       if (onNavigate) onNavigate('dashboard');
     } catch (err) {
       // Handled in authError
+      setPassword('');
+      setConfirmPassword('');
     } finally {
       setSubmitting(false);
     }

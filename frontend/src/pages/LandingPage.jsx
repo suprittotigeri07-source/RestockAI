@@ -57,6 +57,20 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
 
   const authCardRef = useRef(null);
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    const emailParam = params.get('email');
+    if (token) {
+      setAuthTab('forgot');
+      setResetToken(token);
+      setForgotStep(2);
+      if (emailParam) {
+        setForgotEmail(emailParam);
+      }
+    }
+  }, []);
+
   const scrollToAuth = (tab = 'login') => {
     setAuthTab(tab);
     setLoginError('');
@@ -95,6 +109,7 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
       if (onNavigate) onNavigate('dashboard');
     } catch (err) {
       // Error handled in AuthContext
+      setLoginPassword('');
     } finally {
       setLoginSubmitting(false);
     }
@@ -133,6 +148,8 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
       if (onNavigate) onNavigate('dashboard');
     } catch (err) {
       // Error handled in AuthContext
+      setRegPassword('');
+      setRegConfirmPassword('');
     } finally {
       setRegSubmitting(false);
     }

@@ -35,6 +35,7 @@ export default function Login({ onNavigate }) {
       if (onNavigate) onNavigate('dashboard');
     } catch (err) {
       // Error is stored in authError
+      setPassword('');
     } finally {
       setSubmitting(false);
     }

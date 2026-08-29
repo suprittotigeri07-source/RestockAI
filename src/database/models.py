@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Numeric, Date, DateTime, ForeignKey, Text, PrimaryKeyConstraint
+from sqlalchemy import Column, String, Integer, Numeric, Date, DateTime, ForeignKey, Text, PrimaryKeyConstraint, Boolean
 from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime
 
@@ -118,6 +118,7 @@ class User(Base):
     # Relationships
     user_data = relationship("UserData", back_populates="user", cascade="all, delete-orphan")
     predictions = relationship("Prediction", back_populates="user", cascade="all, delete-orphan")
+    reset_tokens = relationship("PasswordResetToken", back_populates="user", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
@@ -191,3 +192,16 @@ class Prediction(Base):
             "upper_bound": float(self.upper_bound) if self.upper_bound is not None else None,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }
+
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_tokens"
+    
+    id = Column(String(64), primary_key=True)
+    user_id = Column(String(64), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = Column(String(255), nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    used = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationship
+    user = relationship("User", back_populates="reset_tokens")
