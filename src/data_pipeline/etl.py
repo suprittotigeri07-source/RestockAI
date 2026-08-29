@@ -198,4 +198,4 @@ class ETLPipeline:
 
 if __name__ == "__main__":
     pipeline = ETLPipeline()
-    pipeline.run()
+    pipeline.run(max_sales_rows=50000)
