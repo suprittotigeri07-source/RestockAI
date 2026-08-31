@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Lock, Mail, User, ArrowRight, ShieldCheck, AlertCircle, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Eye, EyeOff, Lock, Mail, User, ArrowRight, ShieldCheck, AlertCircle, TrendingUp, RefreshCw } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Register({ onNavigate }) {
@@ -11,6 +11,18 @@ export default function Register({ onNavigate }) {
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [clientError, setClientError] = useState('');
+  const [isWarmingUp, setIsWarmingUp] = useState(false);
+
+  useEffect(() => {
+    const handleWarmingUp = () => setIsWarmingUp(true);
+    const handleWarmedUp = () => setIsWarmingUp(false);
+    window.addEventListener('api:warming-up', handleWarmingUp);
+    window.addEventListener('api:warmed-up', handleWarmedUp);
+    return () => {
+      window.removeEventListener('api:warming-up', handleWarmingUp);
+      window.removeEventListener('api:warmed-up', handleWarmedUp);
+    };
+  }, []);
 
   const hasLength = password.length >= 6;
   const hasNumber = /[0-9]/.test(password);
@@ -48,7 +60,7 @@ export default function Register({ onNavigate }) {
       await register(name.trim(), email.trim(), password, confirmPassword);
       if (onNavigate) onNavigate('dashboard');
     } catch (err) {
-      // Handled in authError
+      setClientError(err.message || 'Registration failed. Please check your network and try again.');
       setPassword('');
       setConfirmPassword('');
     } finally {
@@ -96,6 +108,25 @@ export default function Register({ onNavigate }) {
             Get started with isolated ML prediction workflows
           </p>
         </div>
+
+        {/* Warming up Alert */}
+        {isWarmingUp && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            background: '#fffbeb',
+            border: '1px solid #fde68a',
+            borderRadius: '10px',
+            padding: '12px 14px',
+            marginBottom: '16px',
+            color: '#b45309',
+            fontSize: '13px'
+          }}>
+            <RefreshCw size={18} style={{ flexShrink: 0, animation: 'spin 2s linear infinite' }} />
+            <span>Warming up the server, this may take up to a minute on first load...</span>
+          </div>
+        )}
 
         {/* Error Alert */}
         {(clientError || authError) && (

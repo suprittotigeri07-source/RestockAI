@@ -26,6 +26,8 @@ const API_BASE = normalizeApiBase(rawBase);
 
 
 
+let warmingUpCount = 0;
+
 class ApiClient {
   getToken() {
     return localStorage.getItem('restockai_token');
@@ -39,7 +41,7 @@ class ApiClient {
     }
   }
 
-  async request(endpoint, options = {}) {
+  async request(endpoint, options = {}, isRetry = false) {
     const url = `${API_BASE}${endpoint}`;
     const headers = {
       'Content-Type': 'application/json',
@@ -51,8 +53,8 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    // Timeout: 30s for normal requests, 120s for batch predictions
-    const timeoutMs = endpoint.includes('/batch') ? 120000 : 30000;
+    // Timeout: 60s default for normal requests to tolerate Render free-tier cold starts, 120s for batch predictions
+    const timeoutMs = endpoint.includes('/batch') ? 120000 : 60000;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -82,6 +84,38 @@ class ApiClient {
       return data;
     } catch (error) {
       clearTimeout(timeoutId);
+
+      const isTimeout = error.name === 'AbortError';
+      const isNetwork = error.message === 'Failed to fetch' || error.message?.includes('NetworkError');
+
+      // Retry once after a short delay on timeout or network errors to handle sleeping free-tier Render instances
+      if ((isTimeout || isNetwork) && !isRetry) {
+        console.warn(`Request to ${endpoint} failed (Timeout/Network). Retrying once due to potential Render cold-start...`);
+        
+        if (warmingUpCount === 0) {
+          window.dispatchEvent(new CustomEvent('api:warming-up'));
+        }
+        warmingUpCount++;
+
+        // Wait 2 seconds before retrying
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        try {
+          const retryData = await this.request(endpoint, options, true);
+          warmingUpCount--;
+          if (warmingUpCount === 0) {
+            window.dispatchEvent(new CustomEvent('api:warmed-up'));
+          }
+          return retryData;
+        } catch (retryError) {
+          warmingUpCount--;
+          if (warmingUpCount === 0) {
+            window.dispatchEvent(new CustomEvent('api:warmed-up'));
+          }
+          throw retryError;
+        }
+      }
+
       if (error.name === 'AbortError') {
         console.error(`API Timeout on [${options.method || 'GET'} ${endpoint}]: Request took longer than ${timeoutMs / 1000}s`);
         throw new Error('Request timed out. Please check that the backend server is running and try again.');

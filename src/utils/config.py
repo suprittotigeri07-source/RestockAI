@@ -1,6 +1,6 @@
 # RestockAI Core Configuration
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field
+from pydantic import Field, model_validator
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -15,6 +15,23 @@ class Settings(BaseSettings):
     
     # Database Settings
     DATABASE_URL: str = Field(default="postgresql://postgres:postgres@localhost:5432/restockai")
+
+    @model_validator(mode="after")
+    def validate_database_url(self) -> 'Settings':
+        db_url = self.DATABASE_URL
+        if db_url.startswith("postgres://"):
+            self.DATABASE_URL = db_url.replace("postgres://", "postgresql://", 1)
+        
+        import os
+        env = os.environ.get("ENVIRONMENT", self.ENVIRONMENT)
+        if env.lower() == "production":
+            if "localhost" in self.DATABASE_URL or "127.0.0.1" in self.DATABASE_URL:
+                print(
+                    "\n[WARNING] [RestockAI Config] ENVIRONMENT is set to 'production', but DATABASE_URL points to localhost/127.0.0.1. "
+                    "If you are deploying to the cloud (e.g. Render, Railway, AWS, GCP), please make sure you set the DATABASE_URL environment "
+                    "variable to your cloud database connection string. Otherwise, your app might fail to authenticate or connect.\n"
+                )
+        return self
     
     # ML & Forecasting
     DEFAULT_FORECAST_HORIZON_SHORT: int = 7

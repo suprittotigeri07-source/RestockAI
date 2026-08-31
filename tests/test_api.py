@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 from src.api.main import app
 from src.database.connection import get_db_session, init_db
-from src.database.models import Store, Item, SalesDaily, Forecast
+from src.database.models import Store, Item, SalesDaily, Forecast, User
 from datetime import date
 
 client = TestClient(app)
@@ -93,3 +93,38 @@ def test_sheets_export_endpoint():
     assert "SUCCESS" in data["status"]
     assert data["store_id"] == "STR_001"
     assert data["rows_exported"] == 2
+
+def test_user_register_login_round_trip():
+    # Clean up test user if it exists from a previous run
+    with get_db_session() as session:
+        session.query(User).filter(User.email == "freshuser@example.com").delete()
+        session.commit()
+
+    # 1. Register a fresh user
+    reg_payload = {
+        "name": "Fresh User",
+        "email": "freshuser@example.com",
+        "password": "FreshPassword123!",
+        "confirm_password": "FreshPassword123!"
+    }
+    reg_response = client.post("/api/v1/auth/register", json=reg_payload)
+    assert reg_response.status_code == 201
+    reg_data = reg_response.json()
+    assert "access_token" in reg_data
+    assert reg_data["user"]["email"] == "freshuser@example.com"
+
+    # 2. Immediately log in successfully
+    login_payload = {
+        "email": "freshuser@example.com",
+        "password": "FreshPassword123!"
+    }
+    login_response = client.post("/api/v1/auth/login", json=login_payload)
+    assert login_response.status_code == 200
+    login_data = login_response.json()
+    assert "access_token" in login_data
+    assert login_data["user"]["email"] == "freshuser@example.com"
+
+    # Clean up test user after test
+    with get_db_session() as session:
+        session.query(User).filter(User.email == "freshuser@example.com").delete()
+        session.commit()

@@ -30,6 +30,7 @@ yarn-error.log*
 data/*.db
 data/quarantine/*.csv
 data/exports/*.csv
+data/raw/sales_daily.csv
 
 # Secrets & Local credentials
 .env

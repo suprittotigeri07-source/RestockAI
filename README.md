@@ -132,6 +132,18 @@ npm run dev
 ```
 - Frontend Web App: `http://localhost:5173`
 
+## 💤 Render Free Tier Keep-Alive
+
+Because Render's free tier web services automatically spin down/sleep after 15 minutes of inactivity, a cold start can take 30–60+ seconds.
+
+To prevent the backend server from sleeping, you can set up an external keep-alive cron job (e.g., using **[cron-job.org](https://cron-job.org)** or **[UptimeRobot](https://uptimerobot.com)**) to ping the public health check endpoint every 10 minutes:
+
+```text
+https://your-api-link.onrender.com/api/v1/health
+```
+
+The frontend client automatically handles cold starts gracefully by retrying once after a 2-second delay if the initial request times out or experiences a network error.
+
 ---
 
 ## 🐳 Docker Deployment

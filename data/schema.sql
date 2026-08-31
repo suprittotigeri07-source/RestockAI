@@ -112,3 +112,16 @@ CREATE TABLE IF NOT EXISTS predictions (
 
 CREATE INDEX IF NOT EXISTS idx_predictions_user_id ON predictions(user_id);
 CREATE INDEX IF NOT EXISTS idx_predictions_created_at ON predictions(created_at);
+
+-- Password Reset Tokens table
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id VARCHAR(64) PRIMARY KEY,
+    user_id VARCHAR(64) NOT NULL,
+    token_hash VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id ON password_reset_tokens(user_id);

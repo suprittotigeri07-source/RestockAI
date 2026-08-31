@@ -45,6 +45,7 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
   const [showRegPassword, setShowRegPassword] = useState(false);
   const [regSubmitting, setRegSubmitting] = useState(false);
   const [regError, setRegError] = useState('');
+  const [isWarmingUp, setIsWarmingUp] = useState(false);
 
   // Form states - Forgot Password
   const [forgotEmail, setForgotEmail] = useState('');
@@ -69,6 +70,17 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
         setForgotEmail(emailParam);
       }
     }
+  }, []);
+
+  React.useEffect(() => {
+    const handleWarmingUp = () => setIsWarmingUp(true);
+    const handleWarmedUp = () => setIsWarmingUp(false);
+    window.addEventListener('api:warming-up', handleWarmingUp);
+    window.addEventListener('api:warmed-up', handleWarmedUp);
+    return () => {
+      window.removeEventListener('api:warming-up', handleWarmingUp);
+      window.removeEventListener('api:warmed-up', handleWarmedUp);
+    };
   }, []);
 
   const scrollToAuth = (tab = 'login') => {
@@ -108,7 +120,7 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
       await login(loginEmail.trim(), loginPassword);
       if (onNavigate) onNavigate('dashboard');
     } catch (err) {
-      // Error handled in AuthContext
+      setLoginError(err.message || 'Login failed. Please check your credentials.');
       setLoginPassword('');
     } finally {
       setLoginSubmitting(false);
@@ -147,7 +159,7 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
       await register(regName.trim(), regEmail.trim(), regPassword, regConfirmPassword);
       if (onNavigate) onNavigate('dashboard');
     } catch (err) {
-      // Error handled in AuthContext
+      setRegError(err.message || 'Registration failed. Please check your network and try again.');
       setRegPassword('');
       setRegConfirmPassword('');
     } finally {
@@ -617,6 +629,25 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                   >
                     <User size={14} /> Create Account
                   </button>
+                </div>
+              )}
+
+              {/* Warming up Alert */}
+              {isWarmingUp && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  background: '#fffbeb',
+                  border: '1px solid #fde68a',
+                  borderRadius: '10px',
+                  padding: '10px 12px',
+                  marginBottom: '16px',
+                  color: '#b45309',
+                  fontSize: '13px'
+                }}>
+                  <RefreshCw size={16} style={{ flexShrink: 0, animation: 'spin 2s linear infinite' }} />
+                  <span>Warming up the server, this may take up to a minute on first load...</span>
                 </div>
               )}
 
