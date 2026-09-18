@@ -239,15 +239,24 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
   const regIsMatch = regPassword && regPassword === regConfirmPassword;
 
   return (
-    <div className="landing-bg-grid" style={{ minHeight: '100vh', color: '#0f172a', display: 'flex', flexDirection: 'column' }}>
+    <div className="landing-bg-grid" style={{ minHeight: '100vh', color: '#111439', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+      {/* Dynamic Ambient Gradient Orbs */}
+      <div className="orb-container">
+        <div className="orb orb-blue" />
+        <div className="orb orb-purple" />
+        <div className="orb orb-cyan" />
+        <div className="orb orb-pink" />
+      </div>
+
       {/* Top Navigation Bar */}
       <header style={{
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        background: 'rgba(255, 255, 255, 0.92)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid #e2e8f0'
+        background: 'rgba(248, 248, 249, 0.88)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(17, 20, 57, 0.08)'
       }}>
         <div style={{
           maxWidth: '1240px',
@@ -263,44 +272,44 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
               width: '38px',
               height: '38px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
+              background: 'linear-gradient(135deg, #111439 0%, #2563eb 50%, #7c3aed 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
+              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.25)'
             }}>
               <TrendingUp size={20} color="#ffffff" />
             </div>
             <div>
-              <div style={{ fontWeight: 800, fontSize: '18px', letterSpacing: '-0.02em', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ fontWeight: 800, fontSize: '18px', letterSpacing: '-0.02em', color: '#111439', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 RestockAI
                 <span style={{
                   fontSize: '11px',
                   fontWeight: 700,
                   padding: '2px 8px',
                   borderRadius: '12px',
-                  background: '#eff6ff',
-                  border: '1px solid #bfdbfe',
-                  color: '#1d4ed8'
+                  background: 'rgba(37, 99, 235, 0.08)',
+                  border: '1px solid rgba(37, 99, 235, 0.2)',
+                  color: '#2563eb'
                 }}>
                   v2.4 Live
                 </span>
               </div>
-              <div style={{ fontSize: '11px', color: '#64748b' }}>
-                Production Demand & Replenishment Intelligence
+              <div style={{ fontSize: '11px', color: '#646c9a' }}>
+                Production Demand &amp; Replenishment Intelligence
               </div>
             </div>
           </div>
 
           {/* Nav Links (Desktop) */}
           <nav style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
-            <a href="#features" style={{ fontSize: '13px', fontWeight: 600, color: '#475569', textDecoration: 'none' }}>
+            <a href="#features" style={{ fontSize: '13px', fontWeight: 600, color: '#111439', textDecoration: 'none' }}>
               Features
             </a>
-            <a href="#workflow" style={{ fontSize: '13px', fontWeight: 600, color: '#475569', textDecoration: 'none' }}>
+            <a href="#workflow" style={{ fontSize: '13px', fontWeight: 600, color: '#111439', textDecoration: 'none' }}>
               Workflow
             </a>
-            <a href="#architecture" style={{ fontSize: '13px', fontWeight: 600, color: '#475569', textDecoration: 'none' }}>
+            <a href="#architecture" style={{ fontSize: '13px', fontWeight: 600, color: '#111439', textDecoration: 'none' }}>
               Architecture
             </a>
           </nav>
@@ -309,32 +318,15 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <button
               onClick={() => scrollToAuth('login')}
-              style={{
-                padding: '8px 16px',
-                background: '#ffffff',
-                border: '1px solid #cbd5e1',
-                borderRadius: '8px',
-                color: '#334155',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer'
-              }}
+              className="btn-glass-secondary"
+              style={{ padding: '8px 16px', fontSize: '13px' }}
             >
               Sign In
             </button>
             <button
               onClick={() => scrollToAuth('register')}
-              style={{
-                padding: '8px 16px',
-                background: '#2563eb',
-                border: 'none',
-                borderRadius: '8px',
-                color: '#ffffff',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                boxShadow: '0 2px 8px rgba(37, 99, 235, 0.2)'
-              }}
+              className="btn-multi-gradient"
+              style={{ padding: '8px 16px', fontSize: '13px' }}
             >
               Get Started
             </button>
@@ -356,8 +348,8 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
               padding: '6px 14px',
               borderRadius: '24px',
               background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+              border: '1px solid rgba(17, 20, 57, 0.1)',
+              boxShadow: '0 2px 8px rgba(17, 20, 57, 0.04)',
               marginBottom: '20px'
             }}>
               <span style={{
@@ -368,27 +360,27 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                 boxShadow: '0 0 0 3px rgba(16, 185, 129, 0.2)',
                 display: 'inline-block'
               }} />
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: '#111439' }}>
                 XGBoost ML Engine Active
               </span>
-              <span style={{ color: '#cbd5e1' }}>|</span>
-              <span style={{ fontSize: '12px', color: '#64748b' }}>
+              <span style={{ color: 'rgba(17, 20, 57, 0.2)' }}>|</span>
+              <span style={{ fontSize: '12px', color: '#646c9a' }}>
                 Non-Hardcoded Inferences
               </span>
             </div>
 
             {/* Main Headline */}
             <h1 style={{
-              fontSize: '40px',
+              fontSize: '44px',
               lineHeight: 1.15,
               fontWeight: 800,
               letterSpacing: '-0.03em',
-              color: '#0f172a',
-              marginBottom: '16px'
+              color: '#111439',
+              marginBottom: '18px'
             }}>
               Predict Demand.{' '}
               <span style={{
-                background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
+                background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #06b6d4 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
               }}>
@@ -401,102 +393,94 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
             <p style={{
               fontSize: '16px',
               lineHeight: 1.6,
-              color: '#475569',
-              marginBottom: '28px',
+              color: '#323868',
+              marginBottom: '32px',
               maxWidth: '560px'
             }}>
               RestockAI transforms retail pricing, lead times, promotions, and market seasonality into high-precision demand forecasts with statistical 90% confidence bounds and automated store replenishment plans.
             </p>
 
             {/* Key Value Feature Highlights (3-4 points) */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px', marginBottom: '32px' }}>
-              <div style={{
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '32px' }}>
+              <div className="glass-card-dark card-glow-blue" style={{
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '12px',
-                padding: '12px 14px',
+                padding: '14px 16px',
                 background: '#ffffff',
-                borderRadius: '10px',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                border: '1px solid rgba(17, 20, 57, 0.08)'
               }}>
-                <div style={{ padding: '6px', borderRadius: '8px', background: '#eff6ff', color: '#2563eb' }}>
+                <div style={{ padding: '8px', borderRadius: '10px', background: 'rgba(37, 99, 235, 0.1)', color: '#2563eb', boxShadow: '0 2px 8px rgba(37, 99, 235, 0.15)' }}>
                   <Cpu size={18} />
                 </div>
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#111439' }}>
                     Dynamic ML Engine
                   </div>
-                  <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                  <div style={{ fontSize: '12px', color: '#474d84', marginTop: '2px' }}>
                     Live XGBoost regressors & price elasticity modelling.
                   </div>
                 </div>
               </div>
 
-              <div style={{
+              <div className="glass-card-dark card-glow-blue" style={{
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '12px',
-                padding: '12px 14px',
+                padding: '14px 16px',
                 background: '#ffffff',
-                borderRadius: '10px',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                border: '1px solid rgba(17, 20, 57, 0.08)'
               }}>
-                <div style={{ padding: '6px', borderRadius: '8px', background: '#f0fdf4', color: '#16a34a' }}>
+                <div style={{ padding: '8px', borderRadius: '10px', background: 'rgba(124, 58, 237, 0.1)', color: '#7c3aed', boxShadow: '0 2px 8px rgba(124, 58, 237, 0.15)' }}>
                   <ShieldCheck size={18} />
                 </div>
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#111439' }}>
                     Isolated Multi-Tenancy
                   </div>
-                  <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                  <div style={{ fontSize: '12px', color: '#474d84', marginTop: '2px' }}>
                     Bcrypt password hashing & strict per-user data sandbox.
                   </div>
                 </div>
               </div>
 
-              <div style={{
+              <div className="glass-card-dark card-glow-blue" style={{
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '12px',
-                padding: '12px 14px',
+                padding: '14px 16px',
                 background: '#ffffff',
-                borderRadius: '10px',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                border: '1px solid rgba(17, 20, 57, 0.08)'
               }}>
-                <div style={{ padding: '6px', borderRadius: '8px', background: '#faf5ff', color: '#9333ea' }}>
+                <div style={{ padding: '8px', borderRadius: '10px', background: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4', boxShadow: '0 2px 8px rgba(6, 182, 212, 0.15)' }}>
                   <Layers size={18} />
                 </div>
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#111439' }}>
                     Store Replenishment
                   </div>
-                  <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                  <div style={{ fontSize: '12px', color: '#474d84', marginTop: '2px' }}>
                     Automated safety stocks, reorder points & CSV export.
                   </div>
                 </div>
               </div>
 
-              <div style={{
+              <div className="glass-card-dark card-glow-blue" style={{
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '12px',
-                padding: '12px 14px',
+                padding: '14px 16px',
                 background: '#ffffff',
-                borderRadius: '10px',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                border: '1px solid rgba(17, 20, 57, 0.08)'
               }}>
-                <div style={{ padding: '6px', borderRadius: '8px', background: '#fffbeb', color: '#d97706' }}>
+                <div style={{ padding: '8px', borderRadius: '10px', background: 'rgba(236, 72, 153, 0.1)', color: '#ec4899', boxShadow: '0 2px 8px rgba(236, 72, 153, 0.15)' }}>
                   <SlidersHorizontal size={18} />
                 </div>
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#111439' }}>
                     Scenario Studio
                   </div>
-                  <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                  <div style={{ fontSize: '12px', color: '#474d84', marginTop: '2px' }}>
                     Save custom feature presets and replay inferences.
                   </div>
                 </div>
@@ -504,85 +488,73 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
             </div>
 
             {/* CTAs & Trust Metrics */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '28px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '32px' }}>
               <button
                 onClick={() => scrollToAuth('register')}
+                className="btn-multi-gradient"
                 style={{
-                  padding: '12px 24px',
-                  background: '#2563eb',
-                  border: 'none',
-                  borderRadius: '10px',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)'
-                }}
-              >
-                Get Started Free <ArrowRight size={16} />
-              </button>
-
-              <button
-                onClick={() => handleDemoFill('suprit@restockai.io', 'RestockAI2026!')}
-                style={{
-                  padding: '12px 20px',
-                  background: '#ffffff',
-                  border: '1px solid #cbd5e1',
-                  borderRadius: '10px',
-                  color: '#334155',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
+                  padding: '14px 28px',
+                  fontSize: '15px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px'
                 }}
               >
-                <Zap size={16} color="#d97706" /> Try Demo Account
+                Get Started Free <ArrowRight size={18} />
+              </button>
+
+              <button
+                onClick={() => handleDemoFill('suprit@restockai.io', 'RestockAI2026!')}
+                className="btn-glass-secondary"
+                style={{
+                  padding: '14px 22px',
+                  fontSize: '15px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                <Zap size={18} color="#2563eb" /> Try Demo Account
               </button>
             </div>
 
             {/* Trust Badges */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '24px', paddingTop: '16px', borderTop: '1px solid #e2e8f0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '24px', paddingTop: '20px', borderTop: '1px solid rgba(17, 20, 57, 0.08)' }}>
               <div>
-                <div style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a' }}>90%</div>
-                <div style={{ fontSize: '11px', color: '#64748b' }}>Confidence Intervals</div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#111439' }}>90%</div>
+                <div style={{ fontSize: '11px', color: '#646c9a' }}>Confidence Bounds</div>
               </div>
-              <div style={{ width: '1px', height: '24px', background: '#e2e8f0' }} />
+              <div style={{ width: '1px', height: '28px', background: 'rgba(17, 20, 57, 0.08)' }} />
               <div>
-                <div style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a' }}>&lt;45ms</div>
-                <div style={{ fontSize: '11px', color: '#64748b' }}>Inference Latency</div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#2563eb' }}>&lt;45ms</div>
+                <div style={{ fontSize: '11px', color: '#646c9a' }}>Inference Latency</div>
               </div>
-              <div style={{ width: '1px', height: '24px', background: '#e2e8f0' }} />
+              <div style={{ width: '1px', height: '28px', background: 'rgba(17, 20, 57, 0.08)' }} />
               <div>
-                <div style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a' }}>100%</div>
-                <div style={{ fontSize: '11px', color: '#64748b' }}>Tenant Isolation</div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#7c3aed' }}>100%</div>
+                <div style={{ fontSize: '11px', color: '#646c9a' }}>Tenant Isolation</div>
               </div>
             </div>
           </div>
 
           {/* Right Section — Authentication Card */}
           <div ref={authCardRef} style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{
+            <div className="glass-panel-dark" style={{
               width: '100%',
               maxWidth: '460px',
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '20px',
               padding: '32px 28px',
-              boxShadow: '0 12px 36px -6px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04)',
+              background: '#ffffff',
+              border: '1px solid rgba(17, 20, 57, 0.08)',
+              boxShadow: '0 20px 45px -10px rgba(17, 20, 57, 0.1), 0 4px 16px -2px rgba(17, 20, 57, 0.04)',
               position: 'relative'
             }}>
               {/* Card Header & Brand Icon */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '22px' }}>
                 <div>
-                  <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em' }}>
+                  <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#111439', letterSpacing: '-0.02em' }}>
                     {authTab === 'forgot' ? 'Reset Password' : authTab === 'login' ? 'Sign In to RestockAI' : 'Create Workspace'}
                   </h2>
-                  <p style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                  <p style={{ fontSize: '12px', color: '#646c9a', marginTop: '3px' }}>
                     {authTab === 'forgot'
                       ? 'Enter your registered email to receive token'
                       : authTab === 'login'
@@ -591,17 +563,17 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                   </p>
                 </div>
                 <div style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '10px',
-                  background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)',
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '12px',
+                  background: 'linear-gradient(135deg, #111439 0%, #2563eb 50%, #7c3aed 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 4px 10px rgba(37, 99, 235, 0.25)',
+                  boxShadow: '0 4px 14px rgba(37, 99, 235, 0.25)',
                   flexShrink: 0
                 }}>
-                  <TrendingUp size={20} color="#ffffff" />
+                  <TrendingUp size={22} color="#ffffff" />
                 </div>
               </div>
 
@@ -609,11 +581,11 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
               {authTab !== 'forgot' && (
                 <div style={{
                   display: 'flex',
-                  background: '#f1f5f9',
+                  background: '#f1f1f5',
                   padding: '4px',
-                  borderRadius: '10px',
+                  borderRadius: '12px',
                   marginBottom: '20px',
-                  border: '1px solid #e2e8f0'
+                  border: '1px solid rgba(17, 20, 57, 0.06)'
                 }}>
                   <button
                     type="button"
@@ -691,13 +663,13 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
 
               {/* --- LOGIN FORM --- */}
               {authTab === 'login' && (
-                <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '5px' }}>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#111439', marginBottom: '6px' }}>
                       Email Address
                     </label>
                     <div style={{ position: 'relative' }}>
-                      <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                      <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#646c9a' }} />
                       <input
                         id="login-email-input"
                         type="email"
@@ -707,10 +679,10 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                         style={{
                           width: '100%',
                           padding: '10px 12px 10px 38px',
-                          background: '#ffffff',
-                          border: '1px solid #cbd5e1',
-                          borderRadius: '8px',
-                          color: '#0f172a',
+                          background: '#F8F8F9',
+                          border: '1px solid rgba(17, 20, 57, 0.12)',
+                          borderRadius: '10px',
+                          color: '#111439',
                           fontSize: '13px',
                           outline: 'none'
                         }}
@@ -719,8 +691,8 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                   </div>
 
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-                      <label style={{ fontSize: '12px', fontWeight: 700, color: '#334155' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <label style={{ fontSize: '12px', fontWeight: 700, color: '#111439' }}>
                         Password
                       </label>
                       <button
@@ -745,7 +717,7 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                       </button>
                     </div>
                     <div style={{ position: 'relative' }}>
-                      <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                      <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#646c9a' }} />
                       <input
                         id="login-password-input"
                         type={showLoginPassword ? 'text' : 'password'}
@@ -755,10 +727,10 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                         style={{
                           width: '100%',
                           padding: '10px 38px 10px 38px',
-                          background: '#ffffff',
-                          border: '1px solid #cbd5e1',
-                          borderRadius: '8px',
-                          color: '#0f172a',
+                          background: '#F8F8F9',
+                          border: '1px solid rgba(17, 20, 57, 0.12)',
+                          borderRadius: '10px',
+                          color: '#111439',
                           fontSize: '13px',
                           outline: 'none'
                         }}
@@ -773,7 +745,7 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                           transform: 'translateY(-50%)',
                           background: 'none',
                           border: 'none',
-                          color: '#94a3b8',
+                          color: '#646c9a',
                           cursor: 'pointer',
                           padding: 0,
                           display: 'flex'
@@ -788,53 +760,48 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                     id="login-submit-button"
                     type="submit"
                     disabled={loginSubmitting}
+                    className="btn-multi-gradient"
                     style={{
-                      marginTop: '4px',
-                      padding: '11px 18px',
-                      background: '#2563eb',
-                      border: 'none',
-                      borderRadius: '8px',
-                      color: '#ffffff',
-                      fontSize: '13px',
-                      fontWeight: 700,
-                      cursor: loginSubmitting ? 'not-allowed' : 'pointer',
+                      marginTop: '6px',
+                      padding: '12px 18px',
+                      fontSize: '14px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '8px',
-                      boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
                       opacity: loginSubmitting ? 0.75 : 1
                     }}
                   >
                     {loginSubmitting ? 'Authenticating...' : 'Sign In'}
-                    {!loginSubmitting && <ArrowRight size={15} />}
+                    {!loginSubmitting && <ArrowRight size={16} />}
                   </button>
 
                   {/* Fast Fill Demo Profiles */}
                   <div style={{
                     marginTop: '12px',
-                    padding: '10px',
-                    background: '#f8fafc',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
+                    padding: '12px',
+                    background: '#f1f1f5',
+                    border: '1px solid rgba(17, 20, 57, 0.08)',
+                    borderRadius: '10px',
                     textAlign: 'center'
                   }}>
-                    <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#64748b', display: 'block', marginBottom: '6px', fontWeight: 700 }}>
+                    <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#646c9a', display: 'block', marginBottom: '8px', fontWeight: 700 }}>
                       1-Click Demo Profiles
                     </span>
-                    <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                       <button
                         type="button"
                         onClick={() => handleDemoFill('suprit@restockai.io', 'RestockAI2026!')}
                         style={{
-                          padding: '5px 8px',
+                          padding: '6px 12px',
                           fontSize: '11px',
-                          background: '#eff6ff',
-                          border: '1px solid #bfdbfe',
-                          borderRadius: '6px',
-                          color: '#1d4ed8',
+                          background: '#ffffff',
+                          border: '1px solid rgba(17, 20, 57, 0.12)',
+                          borderRadius: '8px',
+                          color: '#111439',
                           cursor: 'pointer',
-                          fontWeight: 600
+                          fontWeight: 700,
+                          boxShadow: '0 1px 4px rgba(17, 20, 57, 0.04)'
                         }}
                       >
                         Demo: Suprit
@@ -843,14 +810,15 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                         type="button"
                         onClick={() => handleDemoFill('analyst@company.com', 'ForecastPass123!')}
                         style={{
-                          padding: '5px 8px',
+                          padding: '6px 12px',
                           fontSize: '11px',
-                          background: '#f1f5f9',
-                          border: '1px solid #cbd5e1',
-                          borderRadius: '6px',
-                          color: '#334155',
+                          background: '#ffffff',
+                          border: '1px solid rgba(17, 20, 57, 0.12)',
+                          borderRadius: '8px',
+                          color: '#111439',
                           cursor: 'pointer',
-                          fontWeight: 600
+                          fontWeight: 700,
+                          boxShadow: '0 1px 4px rgba(17, 20, 57, 0.04)'
                         }}
                       >
                         Demo: Analyst
@@ -862,13 +830,13 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
 
               {/* --- SIGN UP / REGISTER FORM --- */}
               {authTab === 'register' && (
-                <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#111439', marginBottom: '6px' }}>
                       Full Name
                     </label>
                     <div style={{ position: 'relative' }}>
-                      <User size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                      <User size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#646c9a' }} />
                       <input
                         id="register-name-input"
                         type="text"
@@ -877,24 +845,25 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                         onChange={(e) => setRegName(e.target.value)}
                         style={{
                           width: '100%',
-                          padding: '9px 12px 9px 38px',
-                          background: '#ffffff',
-                          border: '1px solid #cbd5e1',
-                          borderRadius: '8px',
-                          color: '#0f172a',
+                          padding: '10px 12px 10px 38px',
+                          background: '#F8F8F9',
+                          border: '1px solid rgba(17, 20, 57, 0.12)',
+                          borderRadius: '10px',
+                          color: '#111439',
                           fontSize: '13px',
-                          outline: 'none'
+                          outline: 'none',
+                          fontWeight: 500
                         }}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#111439', marginBottom: '6px' }}>
                       Work Email
                     </label>
                     <div style={{ position: 'relative' }}>
-                      <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                      <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#646c9a' }} />
                       <input
                         id="register-email-input"
                         type="email"
@@ -903,24 +872,25 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                         onChange={(e) => setRegEmail(e.target.value)}
                         style={{
                           width: '100%',
-                          padding: '9px 12px 9px 38px',
-                          background: '#ffffff',
-                          border: '1px solid #cbd5e1',
-                          borderRadius: '8px',
-                          color: '#0f172a',
+                          padding: '10px 12px 10px 38px',
+                          background: '#F8F8F9',
+                          border: '1px solid rgba(17, 20, 57, 0.12)',
+                          borderRadius: '10px',
+                          color: '#111439',
                           fontSize: '13px',
-                          outline: 'none'
+                          outline: 'none',
+                          fontWeight: 500
                         }}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#111439', marginBottom: '6px' }}>
                       Password
                     </label>
                     <div style={{ position: 'relative' }}>
-                      <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                      <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#646c9a' }} />
                       <input
                         id="register-password-input"
                         type={showRegPassword ? 'text' : 'password'}
@@ -929,13 +899,14 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                         onChange={(e) => setRegPassword(e.target.value)}
                         style={{
                           width: '100%',
-                          padding: '9px 38px 9px 38px',
-                          background: '#ffffff',
-                          border: '1px solid #cbd5e1',
-                          borderRadius: '8px',
-                          color: '#0f172a',
+                          padding: '10px 38px 10px 38px',
+                          background: '#F8F8F9',
+                          border: '1px solid rgba(17, 20, 57, 0.12)',
+                          borderRadius: '10px',
+                          color: '#111439',
                           fontSize: '13px',
-                          outline: 'none'
+                          outline: 'none',
+                          fontWeight: 500
                         }}
                       />
                       <button
@@ -948,7 +919,7 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                           transform: 'translateY(-50%)',
                           background: 'none',
                           border: 'none',
-                          color: '#94a3b8',
+                          color: '#646c9a',
                           cursor: 'pointer',
                           padding: 0,
                           display: 'flex'
@@ -960,11 +931,11 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#111439', marginBottom: '6px' }}>
                       Confirm Password
                     </label>
                     <div style={{ position: 'relative' }}>
-                      <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                      <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#646c9a' }} />
                       <input
                         id="register-confirm-password-input"
                         type={showRegPassword ? 'text' : 'password'}
@@ -973,48 +944,52 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                         onChange={(e) => setRegConfirmPassword(e.target.value)}
                         style={{
                           width: '100%',
-                          padding: '9px 12px 9px 38px',
-                          background: '#ffffff',
-                          border: `1px solid ${regConfirmPassword ? (regIsMatch ? '#86efac' : '#fca5a5') : '#cbd5e1'}`,
-                          borderRadius: '8px',
-                          color: '#0f172a',
+                          padding: '10px 12px 10px 38px',
+                          background: '#F8F8F9',
+                          border: `1px solid ${regConfirmPassword ? (regIsMatch ? 'rgba(16, 185, 129, 0.6)' : 'rgba(239, 68, 68, 0.6)') : 'rgba(17, 20, 57, 0.12)'}`,
+                          borderRadius: '10px',
+                          color: '#111439',
                           fontSize: '13px',
-                          outline: 'none'
+                          outline: 'none',
+                          fontWeight: 500
                         }}
                       />
                     </div>
                   </div>
 
                   {/* Real-time badges */}
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <span style={{
                       fontSize: '10px',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                      background: regHasLength ? '#f0fdf4' : '#f8fafc',
-                      color: regHasLength ? '#15803d' : '#94a3b8',
-                      border: `1px solid ${regHasLength ? '#bbf7d0' : '#e2e8f0'}`
+                      padding: '3px 8px',
+                      borderRadius: '6px',
+                      background: regHasLength ? 'rgba(16, 185, 129, 0.12)' : 'rgba(17, 20, 57, 0.05)',
+                      color: regHasLength ? '#059669' : '#646c9a',
+                      border: `1px solid ${regHasLength ? 'rgba(16, 185, 129, 0.3)' : 'rgba(17, 20, 57, 0.1)'}`,
+                      fontWeight: 700
                     }}>
                       ✓ 6+ Chars
                     </span>
                     <span style={{
                       fontSize: '10px',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                      background: regHasNumberOrSpecial ? '#f0fdf4' : '#f8fafc',
-                      color: regHasNumberOrSpecial ? '#15803d' : '#94a3b8',
-                      border: `1px solid ${regHasNumberOrSpecial ? '#bbf7d0' : '#e2e8f0'}`
+                      padding: '3px 8px',
+                      borderRadius: '6px',
+                      background: regHasNumberOrSpecial ? 'rgba(16, 185, 129, 0.12)' : 'rgba(17, 20, 57, 0.05)',
+                      color: regHasNumberOrSpecial ? '#059669' : '#646c9a',
+                      border: `1px solid ${regHasNumberOrSpecial ? 'rgba(16, 185, 129, 0.3)' : 'rgba(17, 20, 57, 0.1)'}`,
+                      fontWeight: 700
                     }}>
                       ✓ Symbol/Digit
                     </span>
                     {regConfirmPassword && (
                       <span style={{
                         fontSize: '10px',
-                        padding: '2px 6px',
-                        borderRadius: '4px',
-                        background: regIsMatch ? '#f0fdf4' : '#fef2f2',
-                        color: regIsMatch ? '#15803d' : '#b91c1c',
-                        border: `1px solid ${regIsMatch ? '#bbf7d0' : '#fecaca'}`
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                        background: regIsMatch ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+                        color: regIsMatch ? '#059669' : '#dc2626',
+                        border: `1px solid ${regIsMatch ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+                        fontWeight: 700
                       }}>
                         {regIsMatch ? '✓ Matches' : '✗ Differs'}
                       </span>
@@ -1025,26 +1000,20 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                     id="register-submit-button"
                     type="submit"
                     disabled={regSubmitting}
+                    className="btn-multi-gradient"
                     style={{
-                      marginTop: '4px',
-                      padding: '11px 18px',
-                      background: '#2563eb',
-                      border: 'none',
-                      borderRadius: '8px',
-                      color: '#ffffff',
-                      fontSize: '13px',
-                      fontWeight: 700,
-                      cursor: regSubmitting ? 'not-allowed' : 'pointer',
+                      marginTop: '6px',
+                      padding: '12px 18px',
+                      fontSize: '14px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '8px',
-                      boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
                       opacity: regSubmitting ? 0.75 : 1
                     }}
                   >
                     {regSubmitting ? 'Creating Account...' : 'Complete Registration'}
-                    {!regSubmitting && <ArrowRight size={15} />}
+                    {!regSubmitting && <ArrowRight size={16} />}
                   </button>
                 </form>
               )}
@@ -1065,11 +1034,11 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                       gap: '6px',
                       background: 'none',
                       border: 'none',
-                      color: '#64748b',
+                      color: '#2563eb',
                       fontSize: '12px',
-                      fontWeight: 600,
+                      fontWeight: 700,
                       cursor: 'pointer',
-                      marginBottom: '14px',
+                      marginBottom: '16px',
                       padding: 0
                     }}
                   >
@@ -1077,13 +1046,13 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                   </button>
 
                   {forgotStep === 1 ? (
-                    <form onSubmit={handleForgotRequest} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    <form onSubmit={handleForgotRequest} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       <div>
-                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '5px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#111439', marginBottom: '6px' }}>
                           Registered Email
                         </label>
                         <div style={{ position: 'relative' }}>
-                          <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                          <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#646c9a' }} />
                           <input
                             type="email"
                             placeholder="suprit@restockai.io"
@@ -1092,12 +1061,13 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                             style={{
                               width: '100%',
                               padding: '10px 12px 10px 38px',
-                              background: '#ffffff',
-                              border: '1px solid #cbd5e1',
-                              borderRadius: '8px',
-                              color: '#0f172a',
+                              background: '#F8F8F9',
+                              border: '1px solid rgba(17, 20, 57, 0.12)',
+                              borderRadius: '10px',
+                              color: '#111439',
                               fontSize: '13px',
-                              outline: 'none'
+                              outline: 'none',
+                              fontWeight: 500
                             }}
                           />
                         </div>
@@ -1106,15 +1076,10 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                       <button
                         type="submit"
                         disabled={forgotLoading}
+                        className="btn-multi-gradient"
                         style={{
-                          padding: '11px 18px',
-                          background: '#2563eb',
-                          border: 'none',
-                          borderRadius: '8px',
-                          color: '#ffffff',
-                          fontSize: '13px',
-                          fontWeight: 700,
-                          cursor: forgotLoading ? 'not-allowed' : 'pointer',
+                          padding: '12px 18px',
+                          fontSize: '14px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -1125,9 +1090,9 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                       </button>
                     </form>
                   ) : (
-                    <form onSubmit={handleForgotReset} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <form onSubmit={handleForgotReset} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                       <div>
-                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#111439', marginBottom: '6px' }}>
                           Reset Token
                         </label>
                         <input
@@ -1136,24 +1101,25 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                           onChange={(e) => setResetToken(e.target.value)}
                           style={{
                             width: '100%',
-                            padding: '9px 12px',
-                            background: '#f8fafc',
-                            border: '1px solid #cbd5e1',
-                            borderRadius: '8px',
-                            color: '#1e40af',
+                            padding: '10px 12px',
+                            background: '#eff6ff',
+                            border: '1px solid rgba(37, 99, 235, 0.3)',
+                            borderRadius: '10px',
+                            color: '#1d4ed8',
                             fontFamily: 'monospace',
-                            fontSize: '12px',
-                            outline: 'none'
+                            fontSize: '13px',
+                            outline: 'none',
+                            fontWeight: 700
                           }}
                         />
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#111439', marginBottom: '6px' }}>
                           New Password
                         </label>
                         <div style={{ position: 'relative' }}>
-                          <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                          <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#646c9a' }} />
                           <input
                             type="password"
                             placeholder="Min. 6 characters"
@@ -1161,13 +1127,14 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                             onChange={(e) => setNewPassword(e.target.value)}
                             style={{
                               width: '100%',
-                              padding: '9px 12px 9px 38px',
-                              background: '#ffffff',
-                              border: '1px solid #cbd5e1',
-                              borderRadius: '8px',
-                              color: '#0f172a',
+                              padding: '10px 12px 10px 38px',
+                              background: '#F8F8F9',
+                              border: '1px solid rgba(17, 20, 57, 0.12)',
+                              borderRadius: '10px',
+                              color: '#111439',
                               fontSize: '13px',
-                              outline: 'none'
+                              outline: 'none',
+                              fontWeight: 500
                             }}
                           />
                         </div>
@@ -1176,15 +1143,10 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
                       <button
                         type="submit"
                         disabled={forgotLoading}
+                        className="btn-multi-gradient"
                         style={{
-                          padding: '11px 18px',
-                          background: '#15803d',
-                          border: 'none',
-                          borderRadius: '8px',
-                          color: '#ffffff',
-                          fontSize: '13px',
-                          fontWeight: 700,
-                          cursor: forgotLoading ? 'not-allowed' : 'pointer',
+                          padding: '12px 18px',
+                          fontSize: '14px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -1202,96 +1164,99 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
         </section>
 
         {/* SECTION: Core Capabilities Grid */}
-        <section id="features" style={{ padding: '60px 0', borderTop: '1px solid #e2e8f0', background: '#ffffff' }}>
-          <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px 32px 24px', textAlign: 'center' }}>
+        <section id="features" style={{ padding: '80px 0', borderTop: '1px solid rgba(17, 20, 57, 0.08)', background: 'transparent' }}>
+          <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px 40px 24px', textAlign: 'center' }}>
             <span style={{
               fontSize: '12px',
-              fontWeight: 700,
+              fontWeight: 800,
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
+              letterSpacing: '0.08em',
               color: '#2563eb',
-              display: 'block',
-              marginBottom: '8px'
+              display: 'inline-block',
+              background: 'rgba(37, 99, 235, 0.08)',
+              padding: '4px 14px',
+              borderRadius: '20px',
+              marginBottom: '12px'
             }}>
               Intelligent Inventory Platform
             </span>
-            <h2 style={{ fontSize: '30px', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', marginBottom: '12px' }}>
+            <h2 style={{ fontSize: '34px', fontWeight: 800, color: '#111439', letterSpacing: '-0.02em', marginBottom: '14px' }}>
               Engineered for Precision Forecasting
             </h2>
-            <p style={{ fontSize: '15px', color: '#64748b', maxWidth: '620px', margin: '0 auto' }}>
+            <p style={{ fontSize: '15px', color: '#323868', maxWidth: '640px', margin: '0 auto', lineHeight: 1.6 }}>
               Designed to help retail operators and demand planners model real-world variables, reduce inventory carrying costs, and prevent revenue-draining stockouts.
             </p>
           </div>
 
           <div className="features-grid">
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#eff6ff', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <div className="glass-card" style={{ padding: '30px' }}>
+              <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12))', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
                 <Cpu size={22} />
               </div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginBottom: '10px' }}>
                 XGBoost Non-Linear Engine
               </h3>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 Leverages tree-based gradient boosting models trained on historical retail demand patterns, accounting for non-linear interactions across features.
               </p>
             </div>
 
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#f0fdf4', color: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <div className="glass-card" style={{ padding: '30px' }}>
+              <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(37, 99, 235, 0.12))', color: '#0891b2', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
                 <BarChart2 size={22} />
               </div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginBottom: '10px' }}>
                 90% Confidence Bounds
               </h3>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 Calculates upper and lower statistical uncertainty boundaries to protect operations during seasonal volatility and unexpected demand spikes.
               </p>
             </div>
 
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#faf5ff', color: '#9333ea', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <div className="glass-card" style={{ padding: '30px' }}>
+              <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(124, 58, 237, 0.12))', color: '#db2777', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
                 <Layers size={22} />
               </div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginBottom: '10px' }}>
                 Store Replenishment Engine
               </h3>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 Generates actionable reorder triggers, calculates safety stock buffer sizes, and tags replenishment urgency levels for store managers.
               </p>
             </div>
 
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#fffbeb', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-                <SlidersHorizontal size={18} />
+            <div className="glass-card" style={{ padding: '30px' }}>
+              <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(6, 182, 212, 0.12))', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
+                <SlidersHorizontal size={20} />
               </div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginBottom: '10px' }}>
                 Scenario Studio & Presets
               </h3>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 Save custom feature combinations into reusable dataset scenarios. Simulate holiday promotions, price changes, and supplier lead times in 1-click.
               </p>
             </div>
 
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#ecfdf5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <div className="glass-card" style={{ padding: '30px' }}>
+              <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(239, 68, 68, 0.12))', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
                 <FileSpreadsheet size={22} />
               </div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginBottom: '10px' }}>
                 CSV & Google Sheets Ready
               </h3>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 Export store recommendations and forecast distributions directly to CSV or cloud spreadsheets for logistics teams and procurement pipelines.
               </p>
             </div>
 
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#fef2f2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <div className="glass-card" style={{ padding: '30px' }}>
+              <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(37, 99, 235, 0.12))', color: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px' }}>
                 <ShieldCheck size={22} />
               </div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
+              <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginBottom: '10px' }}>
                 Strict Multi-User Security
               </h3>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 Bcrypt password protection with salted keys and signed JWT authorization tokens. Every user's datasets and predictions are completely sandboxed.
               </p>
             </div>
@@ -1299,108 +1264,96 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
         </section>
 
         {/* SECTION: 3-Step Workflow */}
-        <section id="workflow" style={{ padding: '60px 0', borderTop: '1px solid #e2e8f0', background: '#f8fafc' }}>
-          <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px 36px 24px', textAlign: 'center' }}>
+        <section id="workflow" style={{ padding: '80px 0', borderTop: '1px solid rgba(17, 20, 57, 0.08)', background: 'rgba(255, 255, 255, 0.45)' }}>
+          <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px 40px 24px', textAlign: 'center' }}>
             <span style={{
               fontSize: '12px',
-              fontWeight: 700,
+              fontWeight: 800,
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-              color: '#2563eb',
-              display: 'block',
-              marginBottom: '8px'
+              letterSpacing: '0.08em',
+              color: '#7c3aed',
+              display: 'inline-block',
+              background: 'rgba(124, 58, 237, 0.08)',
+              padding: '4px 14px',
+              borderRadius: '20px',
+              marginBottom: '12px'
             }}>
               Operational Pipeline
             </span>
-            <h2 style={{ fontSize: '28px', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.02em', marginBottom: '10px' }}>
+            <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#111439', letterSpacing: '-0.02em', marginBottom: '12px' }}>
               From Input Parameters to In-Store Action
             </h2>
-            <p style={{ fontSize: '14px', color: '#64748b', maxWidth: '580px', margin: '0 auto' }}>
+            <p style={{ fontSize: '15px', color: '#323868', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
               Three simple steps to generate production-grade predictions and automated replenishment orders.
             </p>
           </div>
 
           <div className="workflow-steps-grid">
-            <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '14px',
-              padding: '28px 24px',
-              position: 'relative'
-            }}>
+            <div className="glass-card" style={{ padding: '34px 28px', position: 'relative' }}>
               <div style={{
                 position: 'absolute',
-                top: '-12px',
-                left: '24px',
-                background: '#2563eb',
+                top: '-14px',
+                left: '28px',
+                background: 'var(--gradient-btn)',
                 color: '#ffffff',
                 fontSize: '11px',
                 fontWeight: 800,
-                padding: '3px 10px',
-                borderRadius: '12px'
+                padding: '4px 12px',
+                borderRadius: '12px',
+                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
               }}>
                 STEP 1
               </div>
-              <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginTop: '6px', marginBottom: '8px' }}>
+              <h4 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginTop: '8px', marginBottom: '10px' }}>
                 Ingest Scenario Variables
               </h4>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 Define unit price, supplier lead time, promotional discount depth, historical baseline volume, and upcoming holiday multipliers.
               </p>
             </div>
 
-            <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '14px',
-              padding: '28px 24px',
-              position: 'relative'
-            }}>
+            <div className="glass-card" style={{ padding: '34px 28px', position: 'relative' }}>
               <div style={{
                 position: 'absolute',
-                top: '-12px',
-                left: '24px',
-                background: '#4f46e5',
+                top: '-14px',
+                left: '28px',
+                background: 'var(--gradient-btn)',
                 color: '#ffffff',
                 fontSize: '11px',
                 fontWeight: 800,
-                padding: '3px 10px',
-                borderRadius: '12px'
+                padding: '4px 12px',
+                borderRadius: '12px',
+                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
               }}>
                 STEP 2
               </div>
-              <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginTop: '6px', marginBottom: '8px' }}>
+              <h4 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginTop: '8px', marginBottom: '10px' }}>
                 XGBoost ML Inference
               </h4>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 The FastAPI inference pipeline normalizes features, executes regression scoring, and computes 90% confidence bands in under 50ms.
               </p>
             </div>
 
-            <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '14px',
-              padding: '28px 24px',
-              position: 'relative'
-            }}>
+            <div className="glass-card" style={{ padding: '34px 28px', position: 'relative' }}>
               <div style={{
                 position: 'absolute',
-                top: '-12px',
-                left: '24px',
-                background: '#16a34a',
+                top: '-14px',
+                left: '28px',
+                background: 'var(--gradient-btn)',
                 color: '#ffffff',
                 fontSize: '11px',
                 fontWeight: 800,
-                padding: '3px 10px',
-                borderRadius: '12px'
+                padding: '4px 12px',
+                borderRadius: '12px',
+                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
               }}>
                 STEP 3
               </div>
-              <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', marginTop: '6px', marginBottom: '8px' }}>
+              <h4 style={{ fontSize: '17px', fontWeight: 700, color: '#111439', marginTop: '8px', marginBottom: '10px' }}>
                 Execute Replenishment
               </h4>
-              <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '13px', color: '#474d84', lineHeight: 1.6 }}>
                 Review safety stock requirements, automated stockout warnings, and export distribution schedules to store managers and warehouse leads.
               </p>
             </div>
@@ -1408,58 +1361,54 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
         </section>
 
         {/* SECTION: Architecture Specs */}
-        <section id="architecture" style={{ padding: '60px 0', borderTop: '1px solid #e2e8f0', background: '#ffffff' }}>
+        <section id="architecture" style={{ padding: '80px 0', borderTop: '1px solid rgba(17, 20, 57, 0.08)', background: 'transparent' }}>
           <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px' }}>
             <div style={{
-              background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-              borderRadius: '20px',
-              padding: '40px 36px',
-              color: '#ffffff',
+              background: 'linear-gradient(135deg, #111439 0%, #1a1f59 55%, #2563eb 100%)',
+              borderRadius: '24px',
+              padding: '48px 40px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '24px'
+              gap: '28px',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              boxShadow: '0 20px 40px rgba(17, 20, 57, 0.15), 0 0 30px rgba(37, 99, 235, 0.2)'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
-                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                     Production Architecture
                   </span>
-                  <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>
+                  <h3 style={{ fontSize: '26px', fontWeight: 800, color: '#ffffff', marginTop: '6px' }}>
                     Modern, Scalable & Decoupled Stack
                   </h3>
                 </div>
                 <button
                   onClick={() => scrollToAuth('register')}
+                  className="btn-multi-gradient"
                   style={{
-                    padding: '10px 20px',
-                    background: '#2563eb',
-                    border: 'none',
-                    borderRadius: '8px',
-                    color: '#ffffff',
-                    fontSize: '13px',
-                    fontWeight: 700,
-                    cursor: 'pointer'
+                    padding: '12px 24px',
+                    fontSize: '14px'
                   }}
                 >
                   Deploy Your Workspace
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
-                <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '16px 20px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>API Gateway</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+                <div style={{ background: 'rgba(255, 255, 255, 0.08)', padding: '18px 22px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                  <div style={{ fontSize: '12px', color: '#cbd5e1' }}>API Gateway</div>
                   <div style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginTop: '4px' }}>FastAPI (Async Python)</div>
                 </div>
-                <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '16px 20px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>ML Inference</div>
+                <div style={{ background: 'rgba(255, 255, 255, 0.08)', padding: '18px 22px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                  <div style={{ fontSize: '12px', color: '#cbd5e1' }}>ML Inference</div>
                   <div style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginTop: '4px' }}>XGBoost & Scikit-Learn</div>
                 </div>
-                <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '16px 20px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>Security & Auth</div>
+                <div style={{ background: 'rgba(255, 255, 255, 0.08)', padding: '18px 22px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                  <div style={{ fontSize: '12px', color: '#cbd5e1' }}>Security & Auth</div>
                   <div style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginTop: '4px' }}>Bcrypt + Signed JWT</div>
                 </div>
-                <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '16px 20px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>Frontend Client</div>
+                <div style={{ background: 'rgba(255, 255, 255, 0.08)', padding: '18px 22px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                  <div style={{ fontSize: '12px', color: '#cbd5e1' }}>Frontend Client</div>
                   <div style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', marginTop: '4px' }}>React 19 + Vite</div>
                 </div>
               </div>
@@ -1471,8 +1420,8 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
       {/* Modern Footer */}
       <footer style={{
         background: '#ffffff',
-        borderTop: '1px solid #e2e8f0',
-        padding: '28px 24px',
+        borderTop: '1px solid rgba(17, 20, 57, 0.08)',
+        padding: '32px 24px',
         marginTop: 'auto'
       }}>
         <div style={{
@@ -1484,29 +1433,30 @@ export default function LandingPage({ initialTab = 'login', onNavigate }) {
           flexWrap: 'wrap',
           gap: '16px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
-              width: '28px',
-              height: '28px',
+              width: '32px',
+              height: '32px',
               borderRadius: '8px',
-              background: '#2563eb',
+              background: 'var(--gradient-btn)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              boxShadow: '0 2px 10px rgba(37, 99, 235, 0.25)'
             }}>
-              <TrendingUp size={16} color="#ffffff" />
+              <TrendingUp size={18} color="#ffffff" />
             </div>
-            <span style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>
+            <span style={{ fontSize: '15px', fontWeight: 800, color: '#111439' }}>
               RestockAI
             </span>
-            <span style={{ fontSize: '12px', color: '#64748b' }}>
+            <span style={{ fontSize: '12px', color: '#646c9a' }}>
               — Production Multi-User Prediction & Inventory Platform
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '12px', color: '#64748b' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '12px', color: '#646c9a' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#111439', fontWeight: 600 }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)' }} />
               All Systems Operational
             </span>
             <span>·</span>
